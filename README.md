@@ -1,8 +1,9 @@
-# DesafioPython
+O objetivo do desafio proposto é avaliar o conhecimento do candidato e verificar se ele possui o conhecimento básico esperado para exercício das atividades esperadas. 
 
-O objetivo do desafio proposto é avaliar o conhecimento do candidato e verificar se ele possui o conhecimento básico esperado para exercício das atividades esperadas. Desafio
+##Desafio
 O desafio consiste na construção de um aplicativo simples para locação de automóveis. O objetivo do app é controlar a locação dos veículos, não devendo por exemplo permitir a locação de um mesmo veiculo para 2 usuários ao mesmo tempo. Deverá existir APIs REST para comunicação de cadastro de veiculo, usuários, locação e devolução.
-Requisitos
+
+##Requisitos
 * Veículos possuem as seguintes categorias: Moto, Carro, Utilitário, Caminhão
 * O cadastro do cliente deverá ter somente nome, CPF, tipo de CNH (obrigatórios)
 * O REST deverá aceitar o formato JSON
@@ -29,5 +30,7 @@ Requisitos
 * Melhor utilização das API fornecidas pela plataforma
 * Melhor utilização do espaço da tela
 * Testes unitários
-*Entrega: Deverá criar um PR deste repositório com a solução*
-Qualquer duvida entrar em contato: dev (at) itslemonade.com
+
+**Entrega: Deverá criar um PR deste repositório com a solução**
+
+Qualquer duvida entrar em contato: **dev (at) itslemonade.com**
