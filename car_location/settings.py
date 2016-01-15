@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'car_location.core',
+    'car_location.location'
 ]
 
 MIDDLEWARE_CLASSES = (
