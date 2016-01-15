@@ -4,8 +4,9 @@ from django.shortcuts import resolve_url as r
 from rest_framework.test import APITestCase
 
 
-class CategoriaVeiculoTests(APITestCase):
-    def test_create_categoria(self):
+class CategoriaVeiculoApiTests(APITestCase):
+
+    def test_new_categoria(self):
         """
         Criando categoria de veículo
         """
@@ -32,7 +33,6 @@ class CategoriaVeiculoTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-
     def test_delete_categoria(self):
         self.obj = CategoriaVeiculo.objects.create(
             nome='Carro',
@@ -41,8 +41,3 @@ class CategoriaVeiculoTests(APITestCase):
 
         response = self.client.delete(url[1:])
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
-
-# if __name__ == '__main__':
-#     x = CategoriaVeiculoTests(APITestCase())
-#     x.test_delete_categoria()
