@@ -11,17 +11,19 @@ class Locacao(models.Model):
     veiculo = models.ForeignKey(Veiculo, verbose_name='veiculo')
     data_inicial = models.DateField('data locacão')
     data_final = models.DateField('data de devolução')
-    data_entrega = models.DateField('data da entrega', null=True)
     km_inicial = models.FloatField('km inicial do veículo', null=False)
-    km_final = models.FloatField('km final do veículo', null=True)
     valor = models.FloatField('valor', null=False)
-    multa = models.FloatField('multa', default=0)
-    km_percorrido = models.FloatField('km percorrido', null=True)
+    devolvido = models.BooleanField('devolvido', default=False)
 
 
     class Meta:
         verbose_name_plural = 'locações'
         verbose_name = 'locação'
+
+    def save(self, *args, **kwargs):
+        self.veiculo.disponivel = True if self.devolvido else False
+        self.veiculo.save()
+        super(Locacao, self).save(*args, **kwargs)  # Call the "real" save() method.
 
     def __str__(self):
         return self.cliente.cpf + ' ' + self.veiculo.modelo
@@ -34,7 +36,6 @@ class LocacaoSerializer(serializers.ModelSerializer):
     def validate(self, data):
         cliente, veiculo = data['cliente'], data['veiculo']
         tipo_cnh, permissao_cnh = cliente.tipo_cnh, veiculo.categoria.tipo_cnh
-
         if not tipo_cnh in permissao_cnh.split(","):
             raise serializers.ValidationError({'msg':'cnh não permitida para este veículo',
                                               'code':'cnh_invalida'})
