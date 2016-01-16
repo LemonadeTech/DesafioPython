@@ -378,6 +378,9 @@ var validator = (function($){
 
 		return !!submit;  // casting the variable to make sure it's a boolean
 	}
+    function set_message(messages){
+        message = messages
+    }
 
 	return {
 		defaults 	: defaults,
@@ -387,6 +390,7 @@ var validator = (function($){
 		mark 		: mark,
 		unmark		: unmark,
 		message		: message,
-		tests 		: tests
+		tests 		: tests,
+        set_messages : set_message
 	}
 })(jQuery);
