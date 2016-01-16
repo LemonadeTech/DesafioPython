@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block assets %}
+    <link href="{% static 'css/datatables/tools/css/dataTables.tableTools.css' %}" rel="stylesheet">
+    <script src="{% static 'js/datatables/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'js/datatables/tools/js/dataTables.tableTools.js' %}"></script>
+{% endblock %}
+{% block content %}
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>
+                    Categoria de Veículos
+
+                        </h3>
+                        </div>
+                        <div class="title_right">
+                            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right ">
+                                <a href="{% url 'categoria_new' %}" class="col-md-12 col-sm-12 col-xs-12 btn btn-primary pull-right">Nova Categoria</a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-success">
+                                    <p>{{ message }}</p>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2> Lista de Categorias</h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <table id="example" class="table table-striped responsive-utilities jambo_table">
+                                        <thead>
+                                            <tr class="headings">
+                                                <th>Categoria </th>
+                                                <th>CNH Permitida </th>
+                                                <th class=" no-link last"><span class="nobr"> Ação </span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                        {% for categoria in categorias %}
+                                            <tr class="even pointer">
+                                                <td class=" ">{{ categoria.nome }}</td>
+                                                <td class=" ">{{ categoria.tipo_cnh }}</td>
+                                                <td class=" last ">
+                                                    <a href="{% url 'categoria_detail' categoria.id %}">Detalhe</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br />
+                        <br />
+                        <br />
+
+                    </div>
+                    <!-- footer content -->
+                <footer>
+                    <div class="">
+                        <p class="pull-right">Gentelella Alela! a Bootstrap 3 template by <a>Kimlabs</a>. |
+                            <span class="lead"> <i class="fa fa-paw"></i> Gentelella Alela!</span>
+                        </p>
+                    </div>
+                    <div class="clearfix"></div>
+                </footer>
+                <!-- /footer content -->
+
+                </div>
+
+        <script>
+
+            var asInitVals = new Array();
+            $(document).ready(function () {
+                var oTable = $('#example').dataTable({
+                    "oLanguage": {
+                        "sSearch": "Buscar:"
+                    },
+                    "aoColumnDefs": [
+                        {
+                            'bSortable': false,
+                            'aTargets': [0]
+                        } //disables sorting for column one
+            ],
+                    'iDisplayLength': 10,
+                    "sPaginationType": "full_numbers",
+                    "dom": 'T<"clear">lfrtip'
+                });
+                $("tfoot input").keyup(function () {
+                    /* Filter on the column based on the index of this element's parent <th> */
+                    oTable.fnFilter(this.value, $("tfoot th").index($(this).parent()));
+                });
+                $("tfoot input").each(function (i) {
+                    asInitVals[i] = this.value;
+                });
+                $("tfoot input").focus(function () {
+                    if (this.className == "search_init") {
+                        this.className = "";
+                        this.value = "";
+                    }
+                });
+                $("tfoot input").blur(function (i) {
+                    if (this.value == "") {
+                        this.className = "search_init";
+                        this.value = asInitVals[$("tfoot input").index(this)];
+                    }
+                });
+            });
+        </script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,5 @@
 from car_location.location.views import home, do_login, do_logout, categoria, \
-    veiculo, cliente, locacao, devolucao, categoria_new, categoria_detail
+    veiculo, cliente, locacao, devolucao, categoria_new, categoria_edit
 from django.conf.urls import url, include
 
 from car_location.location.routers import router
@@ -9,7 +9,7 @@ urlpatterns = [
     url(r'^$', home, name='home'),
     url(r'^categoria/$', categoria, name='categoria'),
     url(r'^categoria/new/$', categoria_new, name='categoria_new'),
-    url(r'^categoria/detalhe/(\d+)/$', categoria_detail, name='categoria_detail'),
+    url(r'^categoria/detalhe/(\d+)/$', categoria_edit, name='categoria_detail'),
     url(r'^veiculo/', veiculo, name='veiculo'),
     url(r'^cliente/', cliente, name='cliente'),
     url(r'^locacao/', locacao, name='locacao'),

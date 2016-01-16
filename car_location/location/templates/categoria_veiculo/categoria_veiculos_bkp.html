@@ -25,22 +25,30 @@
                         </div>
                         <div class="x_content">
 
-                            <form action="." method="post" class="form-horizontal form-label-left" novalidate>
+                            <form action="{% url 'categoria_new' %}" method="post" class="form-horizontal form-label-left" novalidate>
                                 {% csrf_token %}
-                                {{ form.non_field_errors }}
-                                 <div class="item form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.nome.id_for_label }}">{{ form.nome.label }}<span class="required">*</span>
+                                <input type="hidden" name="pk" value="{{ categoria.pk }}">
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name"> ID
                                     </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                       {{ form.nome.errors }}
-                                        {{ form.nome }}
+                                    <div class="col-md-1 col-sm-1 col-xs-3">
+                                        <input id="pk" class="form-control col-md-7 col-xs-12"  type="text"  disabled value="{{ categoria.pk }}">
                                     </div>
                                 </div>
                                 <div class="item form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.tipo_cnh.id_for_label }}">{{ form.tipo_cnh.label }}<span class="required">*</span></label>
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Tipo <span class="required">*</span>
+                                    </label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                       {{ form.tipo_cnh.errors }}
-                                    {{ form.tipo_cnh }}
+                                        <input id="name" class="form-control col-md-7 col-xs-12" value="{{ categoria.nome }}"
+                                               data-validate-length-range="2,50"  name="nome" placeholder="ex: Carro" required="required" type="text">
+                                    </div>
+                                </div>
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">CNH Permitida <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input id="tipo_cnh" class="form-control col-md-7 col-xs-12" value="{{ categoria.tipo_cnh }}"
+                                               data-validate-length-range="1,20"  name="tipo_cnh" placeholder="ex: (A), (B), (A,B)" required="required" type="text">
                                     </div>
                                 </div>
 
