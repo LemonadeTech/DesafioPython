@@ -16,6 +16,8 @@ class Locacao(models.Model):
     km_final = models.FloatField('km final do veículo', null=True)
     valor = models.FloatField('valor', null=False)
     multa = models.FloatField('multa', default=0)
+    km_percorrido = models.FloatField('km percorrido', null=True)
+
 
     class Meta:
         verbose_name_plural = 'locações'
@@ -28,3 +30,16 @@ class Locacao(models.Model):
 class LocacaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Locacao
+
+    def validate(self, data):
+        cliente, veiculo = data['cliente'], data['veiculo']
+        tipo_cnh, permissao_cnh = cliente.tipo_cnh, veiculo.categoria.tipo_cnh
+
+        if not tipo_cnh in permissao_cnh.split(","):
+            raise serializers.ValidationError({'msg':'cnh não permitida para este veículo',
+                                              'code':'cnh_invalida'})
+        if not veiculo.disponivel:
+            raise serializers.ValidationError({'msg':'Veículo indisponível!',
+                                              'code':'veiculo_indisponivel'})
+        return data
+

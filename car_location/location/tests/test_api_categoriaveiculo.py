@@ -12,7 +12,7 @@ class CategoriaVeiculoApiTests(APITestCase):
         Criando categoria de veículo
         """
         url = r('location:categoriaveiculo-list')
-        data = {'nome': 'Carro'}
+        data = {'nome': 'Carro', 'tipo_cnh': 'B'}
         response = self.client.post(url, data, format='json')
         with self.subTest():
                 self.assertEqual(response.status_code, status.HTTP_201_CREATED)

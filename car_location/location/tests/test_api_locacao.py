@@ -12,12 +12,12 @@ from rest_framework.test import APITestCase
 class LocacaoApiTests(APITestCase):
 
     def setUp(self):
-        self.categoria = CategoriaVeiculo.objects.create(nome='Carro')
+        self.categoria = CategoriaVeiculo.objects.create(nome='Carro', tipo_cnh='B,C')
         self.veiculo = Veiculo.objects.create(modelo='Palio',
                                          categoria=self.categoria,
                                          quilometragem=55)
         self.cliente = Cliente.objects.create(nome='lucas', cpf='12345678901',
-                                         tipo_cnh='A', email='lucas@test.com',
+                                         tipo_cnh='B', email='lucas@test.com',
                                          phone='719991625771')
 
         self.data = dict(cliente=self.cliente.pk, veiculo=self.veiculo.pk,
@@ -84,6 +84,36 @@ class LocacaoApiTests(APITestCase):
                 self.assertEqual(Locacao.objects.count(), 1)
                 self.assertEqual(Locacao.objects.get().km_final, 70)
                 self.assertEqual(Veiculo.objects.get().disponivel, True)
+
+    def test_validar_cnh_invalida(self):
+
+        url = r('location:locacao-list')
+        # muda o tipo da cnh para uma invalída
+        self.cliente.tipo_cnh='A'
+        self.cliente.save()
+        response = self.client.post(url, self.data, format='json')
+
+        with self.subTest():
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                self.assertEqual(response.data['code'][0], 'cnh_invalida')
+                self.assertEqual(Veiculo.objects.get().disponivel, True)
+
+    def test_locacao_mesmo_veiculo_nao_permitido(self):
+        url = r('location:locacao-list')
+
+        response = self.client.post(url, self.data, format='json')
+
+        # coloca o veiculo indisponível
+        self.veiculo.disponivel = False
+        self.veiculo.save()
+
+        response = self.client.post(url, self.data, format='json')
+
+        with self.subTest():
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+                self.assertEqual(response.data['code'][0], 'veiculo_indisponivel')
+                self.assertEqual(Veiculo.objects.get().disponivel, False)
+
 
     def muda_atributos_data(self, **kwargs):
         self.data = dict(self.data, **kwargs)
