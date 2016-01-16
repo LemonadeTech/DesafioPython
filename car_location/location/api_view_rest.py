@@ -5,6 +5,7 @@ from car_location.location.models.cliente import ClienteSerializer
 from car_location.location.models.locacao import Locacao, LocacaoSerializer
 from car_location.location.models.veiculo import Veiculo
 from car_location.location.models.veiculo import VeiculoSerializer
+from django.db import models
 from rest_framework import viewsets
 
 __author__ = 'lucas'
@@ -13,7 +14,6 @@ __author__ = 'lucas'
 class CategoriaVeiculoViewSet(viewsets.ModelViewSet):
     queryset = CategoriaVeiculo.objects.all()
     serializer_class = CategoriaVeiculoSerializer
-
 
 
 class VeiculoViewSet(viewsets.ModelViewSet):

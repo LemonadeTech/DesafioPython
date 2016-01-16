@@ -1,6 +1,6 @@
 from car_location.location.models.categoriaveiculo import CategoriaVeiculo
 from car_location.location.models.cliente import Cliente
-from car_location.location.models.locacao import Locacao
+from car_location.location.models.locacao import Locacao, LocacaoSerializer
 from car_location.location.models.veiculo import Veiculo
 
 __author__ = 'lucas'
@@ -32,9 +32,15 @@ class LocacaoApiTests(APITestCase):
         url = r('location:locacao-list')
 
         response = self.client.post(url, self.data, format='json')
+
+        # coloca o veiculo indisponível
+        self.veiculo.disponivel = False
+        self.veiculo.save()
+
         with self.subTest():
                 self.assertEqual(response.status_code, status.HTTP_201_CREATED)
                 self.assertEqual(Locacao.objects.count(), 1)
+                self.assertEqual(Veiculo.objects.get().disponivel, False)
 
 
     def test_detail_locacao(self):
@@ -66,6 +72,18 @@ class LocacaoApiTests(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_devolucao_locacao(self):
+
+        self.muda_atributos_data(cliente=self.cliente, veiculo=self.veiculo)
+        self.data["data_entrega"] = "2015-01-27"
+        self.data["km_final"] = 70
+        self.obj = Locacao.objects.create(**self.data)
+        url = r('location:locacao-detail', self.obj.pk)
+        self.veiculo.disponivel = True
+        with self.subTest():
+                self.assertEqual(Locacao.objects.count(), 1)
+                self.assertEqual(Locacao.objects.get().km_final, 70)
+                self.assertEqual(Veiculo.objects.get().disponivel, True)
 
     def muda_atributos_data(self, **kwargs):
         self.data = dict(self.data, **kwargs)
