@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block assets %}
+    <link href="{% static 'css/bootstrap-social.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    {% if not facebook %}
+        <h3>Connect sua conta com o facebook!</h3>
+        <br>
+        <div class="col-sm-3">
+            <a href="{% url 'social:begin' 'facebook' %}?next={% url 'index' %}" class="btn btn-block btn-social btn-facebook">
+                <span class="fa fa-facebook"></span> Entrar com o Facebook
+            </a>
+        </div>
+    {% else %}
+
+    {% endif %}
+
+{% endblock %}
