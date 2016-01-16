@@ -1,5 +1,6 @@
 __author__ = 'lucas'
-from car_location.location.models import CategoriaVeiculo, Veiculo
+from car_location.location.models.categoriaveiculo import CategoriaVeiculo
+from car_location.location.models.veiculo import Veiculo
 from rest_framework import status
 from django.shortcuts import resolve_url as r
 from rest_framework.test import APITestCase

@@ -1,13 +1,13 @@
-from car_location.location.models import CategoriaVeiculo, Veiculo, Cliente, \
-    Locacao
-from rest_framework import serializers, viewsets
+from car_location.location.models.categoriaveiculo import CategoriaVeiculo, \
+    CategoriaVeiculoSerializer
+from car_location.location.models.cliente import Cliente
+from car_location.location.models.cliente import ClienteSerializer
+from car_location.location.models.locacao import Locacao, LocacaoSerializer
+from car_location.location.models.veiculo import Veiculo
+from car_location.location.models.veiculo import VeiculoSerializer
+from rest_framework import viewsets
 
 __author__ = 'lucas'
-
-
-class CategoriaVeiculoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CategoriaVeiculo
 
 
 class CategoriaVeiculoViewSet(viewsets.ModelViewSet):
@@ -15,29 +15,16 @@ class CategoriaVeiculoViewSet(viewsets.ModelViewSet):
     serializer_class = CategoriaVeiculoSerializer
 
 
-class VeiculoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Veiculo
-
 
 class VeiculoViewSet(viewsets.ModelViewSet):
     queryset = Veiculo.objects.all()
     serializer_class = VeiculoSerializer
 
 
-class ClienteSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cliente
-
 
 class ClienteViewSet(viewsets.ModelViewSet):
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer
-
-
-class LocacaoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Locacao
 
 
 class LocacaoViewSet(viewsets.ModelViewSet):

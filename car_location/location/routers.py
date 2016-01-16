@@ -1,4 +1,4 @@
-from car_location.location.serializers import CategoriaVeiculoViewSet, \
+from car_location.location.api_view_rest import CategoriaVeiculoViewSet, \
     VeiculoViewSet, ClienteViewSet, LocacaoViewSet
 from rest_framework import routers
 __author__ = 'lucas'

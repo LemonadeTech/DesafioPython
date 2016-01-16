@@ -1,8 +1,9 @@
-from django.utils.timezone import now
+from car_location.location.models.categoriaveiculo import CategoriaVeiculo
+from car_location.location.models.cliente import Cliente
+from car_location.location.models.locacao import Locacao
+from car_location.location.models.veiculo import Veiculo
 
 __author__ = 'lucas'
-from car_location.location.models import CategoriaVeiculo, Veiculo, Locacao, \
-    Cliente
 from rest_framework import status
 from django.shortcuts import resolve_url as r
 from rest_framework.test import APITestCase
