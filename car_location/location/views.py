@@ -8,10 +8,25 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, resolve_url as r
 
 
-@login_required
+# @login_required
 def home(request):
     return render(request, 'base.html')
 
+
+def categoria(request):
+    return render(request, 'categoria_veiculo/categoria_veiculos.html')
+
+def veiculo(request):
+    return render(request, 'categoria_veiculo/categoria_veiculos.html')
+
+def cliente(request):
+    return render(request, 'categoria_veiculo/categoria_veiculos.html')
+
+def locacao(request):
+    return render(request, 'categoria_veiculo/categoria_veiculos.html')
+
+def devolucao(request):
+    return render(request, 'categoria_veiculo/categoria_veiculos.html')
 
 def do_logout(request):
     logout(request)

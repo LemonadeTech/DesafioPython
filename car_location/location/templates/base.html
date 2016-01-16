@@ -51,7 +51,7 @@
                 <div class="left_col scroll-view">
 
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Rent a Car</span></a>
+                        <a href="/" class="site_title"><i class="fa fa-paw"></i> <span>Rent a Car</span></a>
                     </div>
                     <div class="clearfix"></div>
 
@@ -76,35 +76,33 @@
                         <ul class="nav side-menu">
                             <li class="active"><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu">
-                                    <li class="current-page"><a href="index.html">Dashboard</a>
+                                    <li class="current-page"><a href="/">Dashboard</a>
                                     </li>
 
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-edit"></i> Aluno <span class="fa fa-chevron-down"></span></a>
+                            <li><a><i class="fa fa-edit"></i> Gerênciamento <span class="fa fa-chevron-down"></span></a>
                                 <ul class="nav child_menu" style="display: none">
-                                    <li><a href="#">Cadastro</a>
+                                    <li><a href="{% url 'categoria'%}">Categorias de Veículos</a>
                                     </li>
-                                    <li><a href="#">Lista de Alunos</a>
+                                    <li><a href="{% url 'veiculo'%}">Veículo</a>
+                                    </li>
+                                    <li><a href="{% url 'cliente'%}">Cliente</a>
+                                    </li>
+                                    <li><a href="{% url 'locacao'%}">Locação</a>
+                                    </li>
+                                    <li><a href="{% url 'devolucao'%}">Devolução</a>
                                     </li>
                                 </ul>
                             </li>
-                            <li><a><i class="fa fa-edit"></i> Funcionario<span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="#">Cadastro</a>
-                                    </li>
-                                    <li><a href="#">Lista de Funcionários</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li><a><i class="fa fa-cog"></i> Administração <span class="fa fa-chevron-down"></span></a>
-                                <ul class="nav child_menu" style="display: none">
-                                    <li><a href="form.html">Clientes</a>
-                                    </li>
-                                    <li><a href="form_advanced.html">Usuários</a>
-                                    </li>
-                                </ul>
-                            </li>
+{#                            <li><a><i class="fa fa-cog"></i> Administração <span class="fa fa-chevron-down"></span></a>#}
+{#                                <ul class="nav child_menu" style="display: none">#}
+{#                                    <li><a href="form.html">Clientes</a>#}
+{#                                    </li>#}
+{#                                    <li><a href="form_advanced.html">Usuários</a>#}
+{#                                    </li>#}
+{#                                </ul>#}
+{#                            </li>#}
                         </ul>
 
                     </div>
