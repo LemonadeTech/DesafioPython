@@ -1,3 +1,4 @@
+__author__ = 'lucas'
 from car_location.location.models import CategoriaVeiculo, Veiculo
 from rest_framework import status
 from django.shortcuts import resolve_url as r
@@ -43,7 +44,7 @@ class VeiculoApiTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
-    def test_delete_categoria(self):
+    def test_delete_veiculo(self):
         """
         removendo veiculo
 
