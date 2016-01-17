@@ -1,0 +1,12 @@
+Olá! Tudo bem?
+
+A Reserva solicita acaba de ficar disponível
+
+Nome: {{ reserva.nome }}
+Cliente: {{ reserva.cliente.nome }}
+Veículo: {{ reserva.veiculo.modelo }}
+
+Atenciosamente,
+
+--
+Lucas

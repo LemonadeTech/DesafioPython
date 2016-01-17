@@ -7,6 +7,7 @@ from car_location.location.models.devolucao import Devolucao
 from car_location.location.models.locacao import Locacao
 from car_location.location.models.reserva import Reserva
 from car_location.location.models.veiculo import Veiculo
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -16,7 +17,10 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, resolve_url as r, get_object_or_404, \
     redirect
 import json
+from django.template.loader import render_to_string
 import requests
+from utils.mail_sender import MailSender
+
 
 def home(request):
     return render(request, 'base.html')
@@ -205,10 +209,23 @@ def devolucao_new(request):
     if not form.is_valid():
         return render(request, 'devolucao/devolucao.html', context)
 
-    Devolucao.objects.create(**form.cleaned_data)
+    devolucao = Devolucao.objects.create(**form.cleaned_data)
 
     msg = 'Cadastro realizado com sucesso!!'
     messages.success(request, msg)
+
+    # verificar se tem reserva para esse veiculo e enviar email para o cliente
+    reserva = Reserva.objects.filter(veiculo=devolucao.locacao.veiculo, finalizada=False).order_by('-created_at')
+
+    if reserva:
+        # envia para o primeiro cliente a fazer a reserva
+        _send_email('Reserva Disponível',
+                    settings.DEFAULT_FROM_EMAIL,
+                    devolucao.locacao.cliente.email,
+                    'reserva/reserva_email.txt',
+                    { 'reserva': reserva[0] }
+                    )
+
     return HttpResponseRedirect(r('devolucao'))
 
 
@@ -307,3 +324,13 @@ def do_login(request):
     login(request, usuario)
 
     return HttpResponseRedirect(r('home'))
+
+
+def _send_email(subject, from_, to, template_name, context):
+    body = render_to_string(template_name, context)
+    send_email = MailSender(subject=subject,
+                            body=body,
+                            to=[to],
+                            bcc=[from_],
+                            from_email=from_)
+    send_email.send()
