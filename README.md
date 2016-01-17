@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/lffsantos/DesafioPython.svg?branch=master)](https://travis-ci.org/lffsantos/DesafioPython)
+
+
+
+
 O objetivo do desafio proposto é avaliar o conhecimento do candidato e verificar se ele possui o conhecimento básico esperado para exercício das atividades esperadas. 
 
 ##Desafio
