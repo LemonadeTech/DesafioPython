@@ -6,7 +6,3 @@ install:
   - pip install -q -r requirements.txt
 script:
   - python manage.py test
-script:
-  coverage run --omit=*/site-packages/* manage.py test
-after_success:
-  coveralls
