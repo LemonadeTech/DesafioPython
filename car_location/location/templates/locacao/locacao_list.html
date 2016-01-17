@@ -1,0 +1,52 @@
+{% extends 'base_list.html' %}
+{% block title_page %}
+    Locação
+{% endblock %}
+{% block link_new %}
+    <a href="{% url 'locacao_new' %}" class="col-md-12 col-sm-12 col-xs-12 btn btn-primary pull-right">Nova Locação</a>
+{% endblock %}
+{% block title_page_list %}
+    Lista de Locações
+{% endblock %}
+{% block table %}
+    <table id="example" class="table table-striped responsive-utilities jambo_table">
+        <thead>
+            <tr class="headings">
+                <th>Cliente </th>
+                <th>Veículo </th>
+                <th>Data inicial </th>
+                <th>Data Final </th>
+                <th>Km inicial </th>
+                <th>valor </th>
+                <th>Devolvido </th>
+                <th class=" no-link last"><span class="nobr"> Ação </span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for locacao in locacoes %}
+            <tr class="even pointer">
+                <td class=" ">{{ locacao.cliente.cpf }}</td>
+                <td class=" ">{{ locacao.veiculo.modelo }}</td>
+                <td class=" ">{{ locacao.data_inicial }}</td>
+                <td class=" ">{{ locacao.data_final }}</td>
+                <td class=" ">{{ locacao.km_inicial }}</td>
+                <td class=" ">{{ locacao.valor }}</td>
+                <td class=" ">{{ locacao.devolvido }}</td>
+                <td class=" last ">
+                    <a href="{% url 'locacao_detail' locacao.id %}">Detalhe</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+
+
+
+
+
+

@@ -1,8 +1,10 @@
 from car_location.core.forms import LoginForm
 from car_location.location.forms import CategoriaVeiculoForm, VeiculoForm, \
-    ClienteForm
+    ClienteForm, LocacaoForm, DevolucaoForm
 from car_location.location.models.categoriaveiculo import CategoriaVeiculo
 from car_location.location.models.cliente import Cliente
+from car_location.location.models.devolucao import Devolucao
+from car_location.location.models.locacao import Locacao
 from car_location.location.models.veiculo import Veiculo
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
@@ -20,7 +22,7 @@ def home(request):
 
 
 def categoria_list(request):
-    categoria_veiculos = list(CategoriaVeiculo.objects.all())
+    categoria_veiculos = CategoriaVeiculo.objects.all()
     context = {'categorias': categoria_veiculos}
     return render(request, 'categoria_veiculo/categoria_veiculos_list.html', context)
 
@@ -96,10 +98,12 @@ def veiculo_edit(request, pk):
 
     return render(request, 'veiculo/veiculos.html', {'form': form})
 
+
 def cliente_list(request):
     clientes = Cliente.objects.all()
     context = {'clientes': clientes}
     return render(request, 'cliente/clientes_list.html', context)
+
 
 def cliente_edit(request, pk):
     cliente = get_object_or_404(Cliente, pk=pk)
@@ -133,11 +137,91 @@ def cliente_new(request):
     messages.success(request, msg)
     return HttpResponseRedirect(r('cliente'))
 
-def locacao(request):
-    return render(request, 'categoria_veiculo/categoria_veiculos.html')
 
-def devolucao(request):
-    return render(request, 'categoria_veiculo/categoria_veiculos.html')
+def locacao_list(request):
+    locacao = Locacao.objects.all()
+    context = {'locacoes': locacao}
+    return render(request, 'locacao/locacao_list.html', context)
+
+
+def locacao_new(request):
+
+    if request.method == 'GET':
+        context = {'label': 'Cadastrar', 'form': LocacaoForm()}
+        return render(request, 'locacao/locacao.html', context)
+
+    form = LocacaoForm(request.POST)
+    context = {'label': 'Cadastrar', 'form': form}
+
+    if not form.is_valid():
+        return render(request, 'locacao/locacao.html', context)
+
+    Locacao.objects.create(**form.cleaned_data)
+
+    msg = 'Cadastro realizado com sucesso!!'
+    messages.success(request, msg)
+    return HttpResponseRedirect(r('locacao'))
+
+
+def locacao_edit(request, pk):
+    locacao = get_object_or_404(Locacao, pk=pk)
+    if request.method == "POST":
+        try:
+            form = LocacaoForm(request.POST, instance=locacao)
+        except:
+            raise
+        if form.is_valid():
+            locacao = form.save(commit=False)
+            locacao.save()
+            msg = 'Update realizado com sucesso!!'
+            messages.success(request, msg)
+            return HttpResponseRedirect(r('locacao'))
+    else:
+        form = LocacaoForm(instance=locacao)
+
+    return render(request, 'locacao/locacao.html', {'form': form})
+
+
+def devolucao_list(request):
+    devolucoes = Devolucao.objects.all()
+    context = {'devolucoes': devolucoes}
+    return render(request, 'devolucao/devolucao_list.html', context)
+
+def devolucao_new(request):
+
+    if request.method == 'GET':
+        context = {'label': 'Cadastrar', 'form': DevolucaoForm()}
+        return render(request, 'devolucao/devolucao.html', context)
+
+    form = DevolucaoForm(request.POST)
+    context = {'label': 'Cadastrar', 'form': form}
+
+    if not form.is_valid():
+        return render(request, 'devolucao/devolucao.html', context)
+
+    Devolucao.objects.create(**form.cleaned_data)
+
+    msg = 'Cadastro realizado com sucesso!!'
+    messages.success(request, msg)
+    return HttpResponseRedirect(r('devolucao'))
+
+def devolucao_edit(request, pk):
+    devolucao = get_object_or_404(Devolucao, pk=pk)
+    if request.method == "POST":
+        try:
+            form = DevolucaoForm(request.POST, instance=devolucao)
+        except:
+            raise
+        if form.is_valid():
+            devolucao = form.save(commit=False)
+            devolucao.save()
+            msg = 'Update realizado com sucesso!!'
+            messages.success(request, msg)
+            return HttpResponseRedirect(r('devolucao'))
+    else:
+        form = DevolucaoForm(instance=devolucao)
+
+    return render(request, 'devolucao/devolucao.html', {'form': form})
 
 def do_logout(request):
     logout(request)

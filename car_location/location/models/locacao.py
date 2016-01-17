@@ -22,6 +22,8 @@ class Locacao(models.Model):
 
     def save(self, *args, **kwargs):
         self.veiculo.disponivel = True if self.devolvido else False
+        if not self.pk:
+            self.km_inicial = self.veiculo.quilometragem
         self.veiculo.save()
         super(Locacao, self).save(*args, **kwargs)  # Call the "real" save() method.
 

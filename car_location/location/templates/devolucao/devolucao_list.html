@@ -1,0 +1,44 @@
+{% extends 'base_list.html' %}
+{% block title_page %}
+    Devolução
+{% endblock %}
+{% block link_new %}
+    <a href="{% url 'devolucao_new' %}" class="col-md-12 col-sm-12 col-xs-12 btn btn-primary pull-right">Registrar Devolução</a>
+{% endblock %}
+{% block title_page_list %}
+    Lista de Devoluções
+{% endblock %}
+{% block table %}
+    <table id="example" class="table table-striped responsive-utilities jambo_table">
+        <thead>
+            <tr class="headings">
+                <th>Locação </th>
+                <th>km_percorrido </th>
+                <th>Data de Entrega </th>
+                <th class=" no-link last"><span class="nobr"> Ação </span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for devolucao in devolucoes %}
+            <tr class="even pointer">
+                <td class=" ">{{ devolucao.locacao }}</td>
+                <td class=" ">{{ devolucao.km_percorrido }}</td>
+                <td class=" ">{{ devolucao.data_entrega }}</td>
+                <td class=" last ">
+                    <a href="{% url 'devolucao_detail' devolucao.id %}">Detalhe</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+
+
+
+
+
+

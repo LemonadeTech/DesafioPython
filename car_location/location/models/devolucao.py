@@ -6,7 +6,7 @@ __author__ = 'lucas'
 
 
 class Devolucao(models.Model):
-    locacao = models.ForeignKey(Locacao, verbose_name='locação')
+    locacao = models.ForeignKey(Locacao, verbose_name='locação', unique=True)
     km_percorrido = models.FloatField('km percorrido', null=True)
     data_entrega = models.DateTimeField('data da entrega', auto_now_add=True)
 
@@ -19,6 +19,8 @@ class Devolucao(models.Model):
 
     def save(self, *args, **kwargs):
         self.locacao.devolvido = True
+        self.locacao.veiculo.quilometragem += self.km_percorrido
+        self.locacao.veiculo.save()
         self.locacao.save()
         super(Devolucao, self).save(*args, **kwargs)  # Call the "real" save() method.
 

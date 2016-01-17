@@ -46,7 +46,7 @@ class VeiculosDetail(TestCase):
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
 
-    def test_edit_categoria(self):
+    def test_edit_veiculo(self):
 
         self.assertEqual(Veiculo.objects.get().modelo, 'Palio')
         self.data['modelo'] = 'mudeionome'
