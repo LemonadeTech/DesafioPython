@@ -2,7 +2,8 @@ from car_location.location.views import home, do_login, do_logout, \
     categoria_new, categoria_edit, \
     veiculo_edit, veiculo_new, categoria_list, veiculo_list, cliente_list, \
     cliente_new, cliente_edit, locacao_list, locacao_new, locacao_edit, \
-    devolucao_list, devolucao_new, devolucao_edit
+    devolucao_list, devolucao_new, devolucao_edit, reserva_list, reserva_new, \
+    reserva_edit
 from django.conf.urls import url, include
 
 from car_location.location.routers import router
@@ -30,6 +31,10 @@ urlpatterns = [
     url(r'^devolucao/$', devolucao_list, name='devolucao'),
     url(r'^devolucao/new/$', devolucao_new, name='devolucao_new'),
     url(r'^devolucao/detalhe/(\d+)/$', devolucao_edit, name='devolucao_detail'),
+
+    url(r'^reserva/$', reserva_list, name='reserva'),
+    url(r'^reserva/new/$', reserva_new, name='reserva_new'),
+    url(r'^reserva/detalhe/(\d+)/$', reserva_edit, name='reserva_detail'),
 
     url(r'^login/$', do_login, name='login'),
     url(r'^logout/$', do_logout, name='logout'),

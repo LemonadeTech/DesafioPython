@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.shortcuts import resolve_url as r
 
 
-class ClienteVeiculosNew(TestCase):
+class ClienteNew(TestCase):
     def setUp(self):
         self.resp = self.client.get(r('cliente_new'))
 
@@ -26,7 +26,7 @@ class ClienteVeiculosNew(TestCase):
             with self.subTest():
                 self.assertContains(self.resp, text, count)
 
-    def test_save_categoria(self):
+    def test_save_cliente(self):
         self.data = dict(nome='lucas', tipo_cnh='B', cpf='12345678901')
         resp = self.client.post(r('cliente_new'), self.data)
         self.assertTrue(Cliente.objects.exists())
@@ -41,7 +41,7 @@ class ClienteDetail(TestCase):
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
 
-    def test_edit_categoria(self):
+    def test_edit_cliente(self):
 
         self.assertEqual(Cliente.objects.get().nome, 'lucas')
         self.data['nome'] = 'joão'

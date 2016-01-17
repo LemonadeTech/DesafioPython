@@ -61,7 +61,7 @@ class LocacaoDetail(TestCase):
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
 
-    @unittest.skip('consertar esse teste ASAP')
+    @unittest.skip('remover')
     def test_edit_locacao(self):
 
         self.assertEqual(Locacao.objects.get().devolvido, False)

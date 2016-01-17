@@ -1,0 +1,46 @@
+{% extends 'base_list.html' %}
+{% block title_page %}
+    Reserva
+{% endblock %}
+{% block link_new %}
+    <a href="{% url 'reserva_new' %}" class="col-md-12 col-sm-12 col-xs-12 btn btn-primary pull-right">Nova Reserva</a>
+{% endblock %}
+{% block title_page_list %}
+    Lista de Reservas
+{% endblock %}
+{% block table %}
+    <table id="example" class="table table-striped responsive-utilities jambo_table">
+        <thead>
+            <tr class="headings">
+                <th>Nome </th>
+                <th>Veículo </th>
+                <th>Cliente </th>
+                <th>Finalizada </th>
+                <th class=" no-link last"><span class="nobr"> Ação </span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for reserva in reservas %}
+            <tr class="even pointer">
+                <td class=" ">{{ reserva.nome }}</td>
+                <td class=" ">{{ reserva.veiculo }}</td>
+                <td class=" ">{{ reserva.cliente.nome }}</td>
+                <td class=" ">{{ reserva.finalizada }}</td>
+                <td class=" last ">
+                    <a href="{% url 'reserva_detail' reserva.id %}">Detalhe</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+
+
+
+
+
+

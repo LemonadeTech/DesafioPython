@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
+{% load static from staticfiles %}
 {% load static %}
-{% block assets %}
-    <script src="{% static 'js/validator/validator.js' %}"></script>
-{% endblock %}
 {% block content %}
         <div class="">
             <div class="page-title">
@@ -58,58 +56,6 @@
             </div>
             </div>
         </div>
-        <script>
-
-        // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
-        var validate = validator;
-
-        var msg = {
-                invalid			: 'input invalído',
-                empty			: 'campo obrigatório',
-                min				: 'input pequeno',
-                max				: 'input grande',
-                number_min		: 'muito pequeno',
-                number_max		: 'muito grande',
-                url				: 'url invalída',
-                number			: 'não é um número',
-                email			: 'endereço de email invalído',
-                email_repeat	: 'emails não coincidem',
-                password_repeat	: 'passwords não coincidem',
-                repeat			: 'não combina',
-                complete		: 'input incompleto',
-                select			: 'Por Favor selecione uma opção'
-            };
-
-        validate.set_messages(msg);
-
-        $('form')
-            .on('blur', 'input[required], input.optional, select.required', validate.checkField)
-            .on('change', 'select.required', validate.checkField)
-            .on('keypress', 'input[required][pattern]', validate.keypress);
-
-        $('.multi.required')
-            .on('keyup blur', 'input', function () {
-                validator.checkField.apply($(this).siblings().last()[0]);
-            });
-        // bind the validation to the form submit event
-        //$('#send').click('submit');//.prop('disabled', true);
-
-
-
-        $('form').submit(function (e) {
-            e.preventDefault();
-            var submit = true;
-            // evaluate the form using generic validaing
-            if (!validate.checkAll($(this))) {
-                submit = false;
-            }
-
-            if (submit)
-                this.submit();
-            return false;
-        });
-
-    </script>
 {% endblock %}
 
 

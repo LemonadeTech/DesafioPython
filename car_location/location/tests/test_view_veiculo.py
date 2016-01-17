@@ -55,7 +55,7 @@ class VeiculosDetail(TestCase):
         self.assertEqual(Veiculo.objects.get().modelo, 'mudeionome')
 
 
-class CategoriaVeiculosList(TestCase):
+class VeiculosList(TestCase):
     def setUp(self):
         self.resp = self.client.get(r('veiculo'))
 

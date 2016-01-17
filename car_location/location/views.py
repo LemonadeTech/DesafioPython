@@ -1,10 +1,11 @@
 from car_location.core.forms import LoginForm
 from car_location.location.forms import CategoriaVeiculoForm, VeiculoForm, \
-    ClienteForm, LocacaoForm, DevolucaoForm
+    ClienteForm, LocacaoForm, DevolucaoForm, ReservaForm
 from car_location.location.models.categoriaveiculo import CategoriaVeiculo
 from car_location.location.models.cliente import Cliente
 from car_location.location.models.devolucao import Devolucao
 from car_location.location.models.locacao import Locacao
+from car_location.location.models.reserva import Reserva
 from car_location.location.models.veiculo import Veiculo
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
@@ -58,7 +59,8 @@ def categoria_edit(request, pk):
     else:
         form = CategoriaVeiculoForm(instance=cat)
 
-    return render(request, 'categoria_veiculo/categoria_veiculos.html', {'form': form})
+    context = {'label': 'Editar', 'form': form}
+    return render(request, 'categoria_veiculo/categoria_veiculos.html', context)
 
 
 def veiculo_list(request):
@@ -96,7 +98,8 @@ def veiculo_edit(request, pk):
     else:
         form = VeiculoForm(instance=veiculo)
 
-    return render(request, 'veiculo/veiculos.html', {'form': form})
+    context = {'label': 'Editar', 'form': form}
+    return render(request, 'veiculo/veiculos.html', context)
 
 
 def cliente_list(request):
@@ -118,7 +121,8 @@ def cliente_edit(request, pk):
     else:
         form = ClienteForm(instance=cliente)
 
-    return render(request, 'cliente/clientes.html', {'form': form})
+    context = {'label': 'Editar', 'form': form}
+    return render(request, 'cliente/clientes.html', context)
 
 def cliente_new(request):
     if request.method == 'GET':
@@ -179,13 +183,15 @@ def locacao_edit(request, pk):
     else:
         form = LocacaoForm(instance=locacao)
 
-    return render(request, 'locacao/locacao.html', {'form': form})
+    context = {'label': 'Editar', 'form': form}
+    return render(request, 'locacao/locacao.html', context)
 
 
 def devolucao_list(request):
     devolucoes = Devolucao.objects.all()
     context = {'devolucoes': devolucoes}
     return render(request, 'devolucao/devolucao_list.html', context)
+
 
 def devolucao_new(request):
 
@@ -205,6 +211,7 @@ def devolucao_new(request):
     messages.success(request, msg)
     return HttpResponseRedirect(r('devolucao'))
 
+
 def devolucao_edit(request, pk):
     devolucao = get_object_or_404(Devolucao, pk=pk)
     if request.method == "POST":
@@ -221,7 +228,56 @@ def devolucao_edit(request, pk):
     else:
         form = DevolucaoForm(instance=devolucao)
 
-    return render(request, 'devolucao/devolucao.html', {'form': form})
+    context = {'label': 'Editar', 'form': form}
+
+    return render(request, 'devolucao/devolucao.html', context)
+
+
+def reserva_list(request):
+    reservas = Reserva.objects.all()
+    context = {'reservas': reservas}
+    return render(request, 'reserva/reserva_list.html', context)
+
+
+def reserva_new(request):
+    if request.method == 'GET':
+        context = {'label': 'Cadastrar', 'form': ReservaForm()}
+        return render(request, 'reserva/reserva.html', context)
+
+    form = ReservaForm(request.POST)
+    context = {'label': 'Cadastrar', 'form': form}
+
+    if not form.is_valid():
+        return render(request, 'reserva/reserva.html', context)
+
+    Reserva.objects.create(**form.cleaned_data)
+
+    msg = 'Cadastro realizado com sucesso!!'
+    messages.success(request, msg)
+    return HttpResponseRedirect(r('reserva'))
+
+
+def reserva_edit(request, pk):
+    reserva = get_object_or_404(Reserva, pk=pk)
+    if request.method == "POST":
+        try:
+            form = ReservaForm(request.POST, instance=reserva)
+        except:
+            raise
+        if form.is_valid():
+            reserva = form.save(commit=False)
+            reserva.save()
+            msg = 'Update realizado com sucesso!!'
+            messages.success(request, msg)
+            return HttpResponseRedirect(r('reserva'))
+    else:
+        form = ReservaForm(instance=reserva)
+    context = {'label': 'Editar', 'form': form}
+    return render(request, 'reserva/reserva.html', context)
+
+
+
+# login Desativado
 
 def do_logout(request):
     logout(request)
