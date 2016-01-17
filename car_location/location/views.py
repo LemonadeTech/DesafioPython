@@ -1,6 +1,7 @@
 from car_location.core.forms import LoginForm
-from car_location.location.forms import CategoriaVeiculoForm
+from car_location.location.forms import CategoriaVeiculoForm, VeiculoForm
 from car_location.location.models.categoriaveiculo import CategoriaVeiculo
+from car_location.location.models.veiculo import Veiculo
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -16,7 +17,7 @@ def home(request):
     return render(request, 'base.html')
 
 
-def categoria(request):
+def categoria_list(request):
     categoria_veiculos = list(CategoriaVeiculo.objects.all())
     context = {'categorias': categoria_veiculos}
     return render(request, 'categoria_veiculo/categoria_veiculos_list.html', context)
@@ -52,15 +53,55 @@ def categoria_edit(request, pk):
             return HttpResponseRedirect(r('categoria'))
     else:
         form = CategoriaVeiculoForm(instance=cat)
+
     return render(request, 'categoria_veiculo/categoria_veiculos.html', {'form': form})
 
 
-def veiculo(request):
+def veiculo_list(request):
+    veiculos = Veiculo.objects.all()
+    context = {'veiculos': veiculos}
+    return render(request, 'veiculo/veiculos_list.html', context)
+
+def veiculo_new(request):
+    if request.method == 'GET':
+        context = {'label': 'Cadastrar', 'form': VeiculoForm()}
+        return render(request, 'veiculo/veiculos.html', context)
+
+    form = VeiculoForm(request.POST)
+    context = {'label': 'Cadastrar', 'form': form}
+
+    if not form.is_valid():
+        return render(request, 'veiculo/veiculos.html', context)
+
+    Veiculo.objects.create(**form.cleaned_data)
+
+    msg = 'Cadastro realizado com sucesso!!'
+    messages.success(request, msg)
+    return HttpResponseRedirect(r('veiculo'))
+
+def veiculo_edit(request, pk):
+    veiculo = get_object_or_404(Veiculo, pk=pk)
+    if request.method == "POST":
+        form = VeiculoForm(request.POST, instance=veiculo)
+        if form.is_valid():
+            veiculo = form.save(commit=False)
+            veiculo.save()
+            msg = 'Update realizado com sucesso!!'
+            messages.success(request, msg)
+            return HttpResponseRedirect(r('veiculo'))
+    else:
+        form = VeiculoForm(instance=veiculo)
+
+    return render(request, 'veiculo/veiculos.html', {'form': form})
+
+def cliente_list(request):
     return render(request, 'categoria_veiculo/categoria_veiculos.html')
 
-def cliente(request):
-    return render(request, 'categoria_veiculo/categoria_veiculos.html')
+def cliente_edit(request, pk):
+    pass
 
+def cliente_new(request):
+    pass
 def locacao(request):
     return render(request, 'categoria_veiculo/categoria_veiculos.html')
 

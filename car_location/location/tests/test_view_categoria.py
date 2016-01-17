@@ -1,9 +1,8 @@
 from car_location.location.models.categoriaveiculo import CategoriaVeiculo
-from car_location.location.views import categoria
 
 __author__ = 'lucas'
 
-from django.test import TestCase, RequestFactory
+from django.test import TestCase
 from django.shortcuts import resolve_url as r
 
 

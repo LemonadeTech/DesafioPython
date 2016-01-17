@@ -1,0 +1,46 @@
+{% extends 'base_list.html' %}
+{% block title_page %}
+    Veículos
+{% endblock %}
+{% block link_new %}
+    <a href="{% url 'veiculo_new' %}" class="col-md-12 col-sm-12 col-xs-12 btn btn-primary pull-right">Novo Veículo</a>
+{% endblock %}
+{% block title_page_list %}
+    Lista de Veículos
+{% endblock %}
+{% block table %}
+    <table id="example" class="table table-striped responsive-utilities jambo_table">
+        <thead>
+            <tr class="headings">
+                <th>Modelo</th>
+                <th>Categoria </th>
+                <th>Quilometragem </th>
+                <th>Disponível </th>
+                <th class=" no-link last"><span class="nobr"> Ação </span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for veiculo in veiculos %}
+            <tr class="even pointer">
+                <td class=" ">{{ veiculo.modelo }}</td>
+                <td class=" ">{{ veiculo.categoria.nome }}</td>
+                <td class=" ">{{ veiculo.quilometragem }}</td>
+                <td class=" ">{{ veiculo.disponivel }}</td>
+                <td class=" last ">
+                    <a href="{% url 'veiculo_detail' veiculo.id %}">Detalhe</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+
+
+
+
+
+
