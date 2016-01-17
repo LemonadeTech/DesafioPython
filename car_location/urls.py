@@ -14,10 +14,14 @@ urlpatterns = [
     url(r'^veiculo/$', veiculo_list, name='veiculo'),
     url(r'^veiculo/new/$', veiculo_new, name='veiculo_new'),
     url(r'^veiculo/detalhe/(\d+)/$', veiculo_edit, name='veiculo_detail'),
+
     url(r'^cliente/$', cliente_list, name='cliente'),
     url(r'^cliente/new/$', cliente_new, name='cliente_new'),
     url(r'^cliente/detalhe/(\d+)/$', cliente_edit, name='cliente_detail'),
+
     url(r'^locacao/$', locacao, name='locacao'),
+    url(r'^locacao/new/$', locacao, name='locacao_new'),
+    url(r'^locacao/detalhe/(\d+)/$', locacao, name='locacao_detail'),
     url(r'^devolucao/$', devolucao, name='devolucao'),
     url(r'^login/$', do_login, name='login'),
     url(r'^logout/$', do_logout, name='logout'),

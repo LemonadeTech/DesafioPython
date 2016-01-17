@@ -1,6 +1,8 @@
 from car_location.core.forms import LoginForm
-from car_location.location.forms import CategoriaVeiculoForm, VeiculoForm
+from car_location.location.forms import CategoriaVeiculoForm, VeiculoForm, \
+    ClienteForm
 from car_location.location.models.categoriaveiculo import CategoriaVeiculo
+from car_location.location.models.cliente import Cliente
 from car_location.location.models.veiculo import Veiculo
 from django.contrib import messages
 from django.contrib.auth import logout, login, authenticate
@@ -95,13 +97,42 @@ def veiculo_edit(request, pk):
     return render(request, 'veiculo/veiculos.html', {'form': form})
 
 def cliente_list(request):
-    return render(request, 'categoria_veiculo/categoria_veiculos.html')
+    clientes = Cliente.objects.all()
+    context = {'clientes': clientes}
+    return render(request, 'cliente/clientes_list.html', context)
 
 def cliente_edit(request, pk):
-    pass
+    cliente = get_object_or_404(Cliente, pk=pk)
+    if request.method == "POST":
+        form = ClienteForm(request.POST, instance=cliente)
+        if form.is_valid():
+            cliente = form.save(commit=False)
+            cliente.save()
+            msg = 'Update realizado com sucesso!!'
+            messages.success(request, msg)
+            return HttpResponseRedirect(r('cliente'))
+    else:
+        form = ClienteForm(instance=cliente)
+
+    return render(request, 'cliente/clientes.html', {'form': form})
 
 def cliente_new(request):
-    pass
+    if request.method == 'GET':
+        context = {'label': 'Cadastrar', 'form': ClienteForm()}
+        return render(request, 'cliente/clientes.html', context)
+
+    form = ClienteForm(request.POST)
+    context = {'label': 'Cadastrar', 'form': form}
+
+    if not form.is_valid():
+        return render(request, 'cliente/clientes.html', context)
+
+    Cliente.objects.create(**form.cleaned_data)
+
+    msg = 'Cadastro realizado com sucesso!!'
+    messages.success(request, msg)
+    return HttpResponseRedirect(r('cliente'))
+
 def locacao(request):
     return render(request, 'categoria_veiculo/categoria_veiculos.html')
 

@@ -8,7 +8,7 @@
             <div class="page-title">
                 <div class="title_left">
                     <h3>
-                        Categoria de Veículos
+                        Cliente
                    </h3>
                 </div>
 
@@ -37,10 +37,31 @@
                                     </div>
                                 </div>
                                 <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.cpf.id_for_label }}">{{ form.cpf.label }}<span class="required">*</span></label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                       {{ form.cpf.errors }}
+                                       {{ form.cpf }}
+                                    </div>
+                                </div>
+                                <div class="item form-group">
                                     <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.tipo_cnh.id_for_label }}">{{ form.tipo_cnh.label }}<span class="required">*</span></label>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                        {{ form.tipo_cnh.errors }}
-                                    {{ form.tipo_cnh }}
+                                       {{ form.tipo_cnh }}
+                                    </div>
+                                 </div>
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                       {{ form.phone.errors }}
+                                       {{ form.phone }}
+                                    </div>
+                                </div>
+                                <div class="item form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                       {{ form.email.errors }}
+                                       {{ form.email }}
                                     </div>
                                 </div>
 
@@ -53,9 +74,10 @@
                                 </div>
                             </form>
                         </div>
+                    </div>
+
                 </div>
                 <br />
-            </div>
             </div>
         </div>
         <script>
@@ -111,18 +133,3 @@
 
     </script>
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

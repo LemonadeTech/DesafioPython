@@ -5,7 +5,7 @@ __author__ = 'lucas'
 
 class Cliente(models.Model):
     nome = models.CharField('nome', max_length=255)
-    cpf= models.CharField('cpf', max_length=11, primary_key=True)
+    cpf= models.CharField('cpf', max_length=11, unique=True)
     tipo_cnh= models.CharField('tipo cnh', max_length=2)
     phone = models.CharField('telefone', max_length=20, null=True)
     email = models.EmailField('email', null=True)
