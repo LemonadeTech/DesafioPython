@@ -21,7 +21,7 @@
     -- Para registrar uma devolução entre na página de Locação e clique na opção "devolução"  
     -- o Sistema irá redicionar para a pagina de devolução onde precisara informar somente o km_rodado  
   
---Efetuar Reserva  
+- Efetuar Reserva  
     -- O Sistema permite que o cliente faça uma reserva do veículo quando o mesmo estiver em uso.  
     -- Existem duas formas:  
         -- Entrando na página de veículos irá aparecer uma opção "Reserva" caso o veículo estaja indisponível  
