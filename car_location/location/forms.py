@@ -61,16 +61,22 @@ class VeiculoForm(forms.ModelForm):
         }
 
 
+def validate_cpf(value):
+    if not value.isdigit():
+        raise ValidationError('CPF deve conter apenas números','digits')
+    if len(value) != 11:
+        raise ValidationError('CPF deve conter 11 números', 'length')
+
+
 class ClienteForm(forms.ModelForm):
     email = forms.EmailField(label="Email", required=False, widget=forms.EmailInput(attrs={'class': 'form-control','placeholder': 'ex: email@gmail.com'}))
     phone = forms.CharField(label="Telefone", required=False, widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'ex: (xx)-999999999'}))
-
+    cpf = forms.CharField(label="CPF", widget=forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: 12345678901'}), validators=[validate_cpf])
     class Meta:
         model = Cliente
         fields = ('nome', 'cpf','tipo_cnh', 'phone', 'email')
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: Lucas'}),
-            'cpf': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: 12345678901'}),
             'tipo_cnh': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: A,B separando por "," se for > 1'}),
 
         }
