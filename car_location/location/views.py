@@ -176,10 +176,6 @@ def locacao_edit(request, pk):
     locacao = get_object_or_404(Locacao, pk=pk)
     if request.method == "POST":
         form = LocacaoForm(request.POST, instance=locacao)
-        # form.cleaned_data.update({'veiculo':locacao.veiculo})
-        # form.cleaned_data.update({'cliente':locacao.cliente})
-        # # form.set_veiculo(Veiculo.objects.filter(pk=locacao.veiculo.pk))
-        # form.set_cliente(Cliente.objects.filter(pk=locacao.cliente.pk))
         if form.is_valid():
             locacao = form.save(commit=False)
             locacao.save()
@@ -280,6 +276,12 @@ def reserva_new(request):
     context = {'label': 'Cadastrar', 'form': form}
 
     if not form.is_valid():
+        veiculo = request.POST.get('veiculo', None)
+        if veiculo:
+            # form = ReservaForm(initial={'veiculo': veiculo})
+            form.set_veiculo(Veiculo.objects.filter(pk=veiculo))
+            context['form'] = form
+
         return render(request, 'reserva/reserva.html', context)
 
     Reserva.objects.create(**form.cleaned_data)

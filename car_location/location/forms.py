@@ -103,6 +103,11 @@ class ReservaForm(forms.ModelForm):
     def set_veiculo(self, queryset):
         self.fields['veiculo'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=None)
 
+    def clean(self):
+        tipo_cnh, permissao_cnh = self.cleaned_data.get('cliente').tipo_cnh, self.cleaned_data.get('veiculo').categoria.tipo_cnh
+        if not permissao_cnh in [ tipo for tipo in tipo_cnh]:
+            raise ValidationError('O cliente não Possui habilitação para conduzir esse veículo')
+
     class Meta:
         model = Reserva
         fields = ('nome', 'veiculo', 'cliente', 'finalizada')
