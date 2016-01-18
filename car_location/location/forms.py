@@ -55,6 +55,14 @@ class LocacaoForm(forms.ModelForm):
     km_inicial = forms.CharField(label="Km Inicial", required=False)
     veiculo = forms.ModelChoiceField(queryset=Veiculo.objects.filter(disponivel=True), widget=forms.Select(attrs={'class': 'form-control'}), label="Veículo")
 
+    def set_veiculo(self, queryset):
+        self.fields['veiculo'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=None)
+        self.base_fields['veiculo'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=None)
+
+    def set_cliente(self, queryset):
+        self.fields['cliente'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Cliente",  empty_label=None)
+        self.base_fields['cliente'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=None)
+
     def clean(self):
         tipo_cnh, permissao_cnh = self.cleaned_data.get('cliente').tipo_cnh, self.cleaned_data.get('veiculo').categoria.tipo_cnh
         if not permissao_cnh in [ tipo for tipo in tipo_cnh]:
@@ -70,9 +78,15 @@ class LocacaoForm(forms.ModelForm):
             'valor': forms.NumberInput(attrs={'class': 'form-control col-md-7 col-xs-12'})
         }
 
+
 class DevolucaoForm(forms.ModelForm):
 
-    locacao = forms.ModelChoiceField(queryset=Locacao.objects.filter(devolvido=False), widget=forms.Select(attrs={'class':'form-control'}), label="Locação")
+    locacao = forms.ModelChoiceField(queryset=Locacao.objects.filter(devolvido=False), widget=forms.Select(attrs={'class':'form-control'}), label="Locação",  empty_label=None)
+
+    def set_locacao(self, queryset):
+        self.fields['locacao'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Locação",  empty_label=None)
+        self.base_fields['locacao'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Locação")
+
 
     class Meta:
         model = Devolucao
@@ -82,11 +96,12 @@ class DevolucaoForm(forms.ModelForm):
         }
 
 
-
-
 class ReservaForm(forms.ModelForm):
 
     veiculo = forms.ModelChoiceField(queryset=Veiculo.objects.filter(disponivel=False), widget=forms.Select(), label="Veículo")
+
+    def set_veiculo(self, queryset):
+        self.fields['veiculo'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=None)
 
     class Meta:
         model = Reserva

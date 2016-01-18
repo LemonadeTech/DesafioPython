@@ -50,14 +50,14 @@ class ReservaDetail(TestCase):
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
 #
-    # def test_edit_reserva(self):
-    #
-    #     self.assertFalse(Reserva.objects.get().finalizada)
-    #     self.data['finalizada'] = True
-    #     self.data['cliente'] = self.cliente.pk
-    #     self.data['veiculo'] = self.veiculo.pk
-    #     resp = self.client.post(r('reserva_detail', self.obj.pk), self.data)
-    #     self.assertTrue(Reserva.objects.get().finalizada)
+    def test_edit_reserva(self):
+
+        self.assertFalse(Reserva.objects.get().finalizada)
+        self.data['finalizada'] = True
+        self.data['cliente'] = self.cliente.pk
+        self.data['veiculo'] = self.veiculo.pk
+        resp = self.client.post(r('reserva_detail', self.obj.pk), self.data)
+        self.assertTrue(Reserva.objects.get().finalizada)
 
 
 class ReservaList(TestCase):

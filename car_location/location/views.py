@@ -13,6 +13,7 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from django import forms
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, resolve_url as r, get_object_or_404, \
     redirect
@@ -174,10 +175,11 @@ def locacao_new(request):
 def locacao_edit(request, pk):
     locacao = get_object_or_404(Locacao, pk=pk)
     if request.method == "POST":
-        try:
-            form = LocacaoForm(request.POST, instance=locacao)
-        except:
-            raise
+        form = LocacaoForm(request.POST, instance=locacao)
+        # form.cleaned_data.update({'veiculo':locacao.veiculo})
+        # form.cleaned_data.update({'cliente':locacao.cliente})
+        # # form.set_veiculo(Veiculo.objects.filter(pk=locacao.veiculo.pk))
+        # form.set_cliente(Cliente.objects.filter(pk=locacao.cliente.pk))
         if form.is_valid():
             locacao = form.save(commit=False)
             locacao.save()
@@ -185,7 +187,9 @@ def locacao_edit(request, pk):
             messages.success(request, msg)
             return HttpResponseRedirect(r('locacao'))
     else:
-        form = LocacaoForm(instance=locacao)
+        form = LocacaoForm(instance=locacao, initial={'veiculo': locacao.veiculo.pk})
+        form.set_veiculo(Veiculo.objects.filter(pk=locacao.veiculo.pk))
+        form.set_cliente(Cliente.objects.filter(pk=locacao.cliente.pk))
 
     context = {'label': 'Editar', 'form': form}
     return render(request, 'locacao/locacao.html', context)
@@ -200,7 +204,13 @@ def devolucao_list(request):
 def devolucao_new(request):
 
     if request.method == 'GET':
-        context = {'label': 'Cadastrar', 'form': DevolucaoForm()}
+        form = DevolucaoForm()
+        locacao = request.GET.get('locacao', None)
+        if locacao:
+            form = DevolucaoForm(initial={'locacao': locacao})
+            form.set_locacao(Locacao.objects.filter(pk=locacao))
+
+        context = {'label': 'Cadastrar', 'form': form}
         return render(request, 'devolucao/devolucao.html', context)
 
     form = DevolucaoForm(request.POST)
@@ -211,7 +221,7 @@ def devolucao_new(request):
 
     devolucao = Devolucao.objects.create(**form.cleaned_data)
 
-    msg = 'Cadastro realizado com sucesso!!'
+    msg = 'Devolução registrada com sucesso!!'
     messages.success(request, msg)
 
     # verificar se tem reserva para esse veiculo e enviar email para o cliente
@@ -232,10 +242,7 @@ def devolucao_new(request):
 def devolucao_edit(request, pk):
     devolucao = get_object_or_404(Devolucao, pk=pk)
     if request.method == "POST":
-        try:
-            form = DevolucaoForm(request.POST, instance=devolucao)
-        except:
-            raise
+        form = DevolucaoForm(request.POST, instance=devolucao)
         if form.is_valid():
             devolucao = form.save(commit=False)
             devolucao.save()
@@ -243,7 +250,8 @@ def devolucao_edit(request, pk):
             messages.success(request, msg)
             return HttpResponseRedirect(r('devolucao'))
     else:
-        form = DevolucaoForm(instance=devolucao)
+        form = DevolucaoForm(instance=devolucao, initial={'locacao': devolucao.locacao.pk})
+        form.set_locacao(Locacao.objects.filter(pk=devolucao.locacao.pk))
 
     context = {'label': 'Editar', 'form': form}
 
@@ -257,8 +265,15 @@ def reserva_list(request):
 
 
 def reserva_new(request):
+
     if request.method == 'GET':
-        context = {'label': 'Cadastrar', 'form': ReservaForm()}
+        form = ReservaForm()
+        veiculo = request.GET.get('veiculo', None)
+        if veiculo:
+            form = ReservaForm(initial={'veiculo': veiculo})
+            form.set_veiculo(Veiculo.objects.filter(pk=veiculo))
+
+        context = {'label': 'Cadastrar', 'form': form}
         return render(request, 'reserva/reserva.html', context)
 
     form = ReservaForm(request.POST)

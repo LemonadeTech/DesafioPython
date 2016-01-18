@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^cliente/detalhe/(\d+)/$', cliente_edit, name='cliente_detail'),
 
     url(r'^locacao/$', locacao_list, name='locacao'),
-    url(r'^locacao/new/$', locacao_new, name='locacao_new'),
+    url(r'^locacao/new/', locacao_new, name='locacao_new'),
     url(r'^locacao/detalhe/(\d+)/$', locacao_edit, name='locacao_detail'),
 
     url(r'^devolucao/$', devolucao_list, name='devolucao'),

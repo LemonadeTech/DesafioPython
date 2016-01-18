@@ -1,4 +1,5 @@
 {% extends 'base_list.html' %}
+{% load static from staticfiles %}
 {% block title_page %}
     Veículos
 {% endblock %}
@@ -27,9 +28,18 @@
                 <td class=" ">{{ veiculo.modelo }}</td>
                 <td class=" ">{{ veiculo.categoria.nome }}</td>
                 <td class=" ">{{ veiculo.quilometragem }}</td>
-                <td class=" ">{{ veiculo.disponivel }}</td>
+                <td class=" ">
+                    {% if veiculo.disponivel %}
+                    <img src="{% static 'admin/img/icon-yes.svg'%}" alt="True">
+                    {% else %}
+                    <img src="{% static 'admin/img/icon-no.svg'%}" alt="False">
+                    {% endif %}
+                </td>
                 <td class=" last ">
                     <a href="{% url 'veiculo_detail' veiculo.id %}">Detalhe</a>
+                    {% if not veiculo.disponivel %}
+                        | <a href="{% url 'reserva_new' %}?veiculo={{ veiculo.id }}">Reserva</a>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

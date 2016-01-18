@@ -1,4 +1,5 @@
 {% extends 'base_list.html' %}
+{% load static from staticfiles %}
 {% block title_page %}
     Locação
 {% endblock %}
@@ -33,9 +34,18 @@
                 <td class=" ">{{ locacao.data_final }}</td>
                 <td class=" ">{{ locacao.km_inicial }}</td>
                 <td class=" ">{{ locacao.valor }}</td>
-                <td class=" ">{{ locacao.devolvido }}</td>
+                <td class=" ">
+                    {% if locacao.devolvido %}
+                    <img src="{% static 'admin/img/icon-yes.svg'%}" alt="True">
+                    {% else %}
+                    <img src="{% static 'admin/img/icon-no.svg'%}" alt="False">
+                    {% endif %}
+                </td>
                 <td class=" last ">
-                    <a href="{% url 'locacao_detail' locacao.id %}">Detalhe</a>
+                    {% if not locacao.devolvido %}
+                        <a href="{% url 'devolucao_new' %}?locacao={{ locacao.id }}">Devolução</a> |
+                    {% endif %}
+                        <a href="{% url 'locacao_detail' locacao.id %}">Detalhe</a>
                 </td>
             </tr>
         {% endfor %}

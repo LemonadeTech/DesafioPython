@@ -24,11 +24,10 @@ class LocacaoNew(TestCase):
     def test_html(self):
         """HTML must contains input tags"""
         tags = (('<form',1),
-                ('<input', 5),
+                ('<input', 4),
                 ('type="text"', 2),
                 ('type="number"', 1),
                 ('<select', 2),
-                ('type="checkbox"', 1),
                 ('type="submit"',1))
         for text, count in tags:
             with self.subTest():
@@ -61,17 +60,16 @@ class LocacaoDetail(TestCase):
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
 
-    @unittest.skip('remover')
+    @unittest.skip('test broken fixed ASAP')
     def test_edit_locacao(self):
 
         self.assertEqual(Locacao.objects.get().devolvido, False)
         self.data['data_final'] = datetime.date.today()
-        self.data['cliente'] = self.cliente.pk
-        self.data['veiculo'] = self.veiculo.pk
+        self.data['cliente'] = self.cliente
+        self.data['veiculo'] = self.veiculo
         resp = self.client.post(r('locacao_detail', self.obj.pk), self.data)
         self.assertEqual(Locacao.objects.get().data_final, datetime.date.today())
-#
-#
+
 class locacaoList(TestCase):
     def setUp(self):
         self.resp = self.client.get(r('locacao'))
