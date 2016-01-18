@@ -55,18 +55,25 @@ class LocacaoForm(forms.ModelForm):
     km_inicial = forms.CharField(label="Km Inicial", required=False)
     veiculo = forms.ModelChoiceField(queryset=Veiculo.objects.filter(disponivel=True), widget=forms.Select(attrs={'class': 'form-control'}), label="Veículo")
 
-    def set_veiculo(self, queryset):
-        self.fields['veiculo'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=None)
-        self.base_fields['veiculo'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=None)
+    def set_veiculo(self, queryset, empty_label=None):
+        self.fields['veiculo'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=empty_label)
+        self.base_fields['veiculo'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=empty_label)
 
-    def set_cliente(self, queryset):
-        self.fields['cliente'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Cliente",  empty_label=None)
-        self.base_fields['cliente'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=None)
+    def set_cliente(self, queryset, empty_label=None):
+        self.fields['cliente'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Cliente",  empty_label=empty_label)
+        self.base_fields['cliente'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Cliente",  empty_label=empty_label)
 
     def clean(self):
-        tipo_cnh, permissao_cnh = self.cleaned_data.get('cliente').tipo_cnh, self.cleaned_data.get('veiculo').categoria.tipo_cnh
-        if not permissao_cnh in [ tipo for tipo in tipo_cnh]:
+
+        tipo_cnh_cliente, permissao_veiculo_cnh = self.cleaned_data.get('cliente').tipo_cnh, self.cleaned_data.get('veiculo').categoria.tipo_cnh
+        permission = False
+        for p in permissao_veiculo_cnh.split(","):
+            if p.strip() in [ t.strip() for t in tipo_cnh_cliente.split(",")]:
+                permission = True
+                break
+        if not permission:
             raise ValidationError('O cliente não Possui habilitação para conduzir esse veículo')
+
 
     class Meta:
         model = Locacao
@@ -98,16 +105,36 @@ class DevolucaoForm(forms.ModelForm):
 
 class ReservaForm(forms.ModelForm):
 
-    veiculo = forms.ModelChoiceField(queryset=Veiculo.objects.filter(disponivel=False), widget=forms.Select(), label="Veículo")
+    veiculo = forms.ModelChoiceField(queryset=Veiculo.objects.filter(disponivel=False), widget=forms.Select(attrs={'class':'form-control'}), label="Veículo")
 
-    def set_veiculo(self, queryset):
-        self.fields['veiculo'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=None)
+    def set_veiculo(self, queryset, empty_label=None):
+        self.fields['veiculo'] = forms.ModelChoiceField(queryset=queryset,
+                                                        widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=empty_label)
+        self.base_fields['veiculo'] = forms.ModelChoiceField(queryset=queryset,
+                                                             widget=forms.Select(attrs={'class':'form-control'}), label="Veículo",  empty_label=empty_label)
+
+    def set_cliente(self, queryset, empty_label=None):
+        self.fields['cliente'] = forms.ModelChoiceField(queryset=queryset,
+                                                        widget=forms.Select(attrs={'class':'form-control'}), label="Cliente",  empty_label=empty_label)
+        self.base_fields['cliente'] = forms.ModelChoiceField(queryset=queryset,
+                                                             widget=forms.Select(attrs={'class':'form-control'}), label="Cliente",  empty_label=empty_label)
 
     def clean(self):
+        reserva = Reserva.objects.filter(cliente=self.cleaned_data.get('cliente'),
+                                         veiculo=self.cleaned_data.get('veiculo'),finalizada=True)
+        if reserva:
+            raise ValidationError('O cliente Já tem uma reserva aberta para esse veículo.')
         tipo_cnh, permissao_cnh = self.cleaned_data.get('cliente').tipo_cnh, self.cleaned_data.get('veiculo').categoria.tipo_cnh
         if not permissao_cnh in [ tipo for tipo in tipo_cnh]:
             raise ValidationError('O cliente não Possui habilitação para conduzir esse veículo')
+        if self.cleaned_data.get('cliente').email == "":
+            raise ValidationError('Adicone um endereço de email ao cliente para efetuar a reserva')
 
     class Meta:
         model = Reserva
         fields = ('nome', 'veiculo', 'cliente', 'finalizada')
+        widgets = {
+            'nome': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active'}),
+            'veiculo':   forms.Select(attrs={'class': 'form-control'}),
+            'cliente':   forms.Select(attrs={'class': 'form-control'}),
+        }

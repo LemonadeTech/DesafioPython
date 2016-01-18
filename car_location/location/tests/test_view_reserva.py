@@ -22,7 +22,7 @@ class ReservaNew(TestCase):
     def test_html(self):
         """HTML must contains input tags"""
         tags = (('<form',1),
-                ('<input', 2),
+                ('<input', 3),
                 ('<select', 2),
                 ('type="submit"',1))
         for text, count in tags:

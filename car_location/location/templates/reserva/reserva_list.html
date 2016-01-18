@@ -1,4 +1,5 @@
 {% extends 'base_list.html' %}
+{% load static from staticfiles %}
 {% block title_page %}
     Reserva
 {% endblock %}
@@ -15,7 +16,7 @@
                 <th>Nome </th>
                 <th>Veículo </th>
                 <th>Cliente </th>
-                <th>Finalizada </th>
+                <th>Aberta </th>
                 <th class=" no-link last"><span class="nobr"> Ação </span>
                 </th>
             </tr>
@@ -27,7 +28,13 @@
                 <td class=" ">{{ reserva.nome }}</td>
                 <td class=" ">{{ reserva.veiculo }}</td>
                 <td class=" ">{{ reserva.cliente.nome }}</td>
-                <td class=" ">{{ reserva.finalizada }}</td>
+                <td class=" ">
+                    {% if not reserva.finalizada %}
+                    <img src="{% static 'admin/img/icon-yes.svg'%}" alt="True">
+                    {% else %}
+                    <img src="{% static 'admin/img/icon-no.svg'%}" alt="False">
+                    {% endif %}
+                </td>
                 <td class=" last ">
                     <a href="{% url 'reserva_detail' reserva.id %}">Detalhe</a>
                 </td>
