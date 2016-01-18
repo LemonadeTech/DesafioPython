@@ -30,8 +30,8 @@ class CategoriaVeiculoForm(forms.ModelForm):
         model = CategoriaVeiculo
         fields = ('nome', 'tipo_cnh',)
         widgets = {
-            'nome': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active'}),
-            'tipo_cnh':   forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active'}),
+            'nome': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: carro'}),
+            'tipo_cnh':   forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active','placeholder': 'ex: B, C separando por "," se for > 1 '}),
 
         }
 
@@ -54,7 +54,7 @@ class VeiculoForm(forms.ModelForm):
         model = Veiculo
         fields = ('modelo', 'categoria','quilometragem', 'disponivel')
         widgets = {
-            'modelo': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active'}),
+            'modelo': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: Palio'}),
             'categoria':   forms.Select(attrs={'class': 'form-control'}),
             'quilometragem' : forms.NumberInput(attrs={'class': 'form-control col-md-7 col-xs-12'})
 
@@ -62,20 +62,18 @@ class VeiculoForm(forms.ModelForm):
 
 
 class ClienteForm(forms.ModelForm):
-    email = forms.EmailField(label="Email", required=False, widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    phone = forms.CharField(label="Telefone", required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label="Email", required=False, widget=forms.EmailInput(attrs={'class': 'form-control','placeholder': 'ex: (xx)-999999999'}))
+    phone = forms.CharField(label="Telefone", required=False, widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'ex: email@gmail.com'}))
 
     class Meta:
         model = Cliente
         fields = ('nome', 'cpf','tipo_cnh', 'phone', 'email')
         widgets = {
-            'nome': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active'}),
-            'cpf': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active'}),
-            'tipo_cnh': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active'}),
+            'nome': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: Lucas'}),
+            'cpf': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: 12345678901'}),
+            'tipo_cnh': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: A,B separando por "," se for > 1'}),
 
         }
-
-
 
 class LocacaoForm(forms.ModelForm):
 
@@ -109,8 +107,8 @@ class LocacaoForm(forms.ModelForm):
         model = Locacao
         fields = ('cliente', 'veiculo','data_inicial', 'data_final', 'km_inicial', 'valor', 'devolvido')
         widgets = {
-            'data_inicial': forms.DateInput(attrs={'class': 'date-picker form-control col-md-7 col-xs-12 active'}),
-            'data_final':   forms.DateInput(attrs={'class': 'date-picker form-control col-md-7 col-xs-12 active'}),
+            'data_inicial': forms.DateInput(attrs={'class': 'date-picker form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: DD/MM/YYY'}),
+            'data_final':   forms.DateInput(attrs={'class': 'date-picker form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: DD/MM/YYY'}),
             'cliente':   forms.Select(attrs={'class': 'form-control'}),
             'valor': forms.NumberInput(attrs={'class': 'form-control col-md-7 col-xs-12'})
         }
@@ -176,7 +174,7 @@ class ReservaForm(forms.ModelForm):
         model = Reserva
         fields = ('nome', 'veiculo', 'cliente', 'finalizada')
         widgets = {
-            'nome': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active'}),
+            'nome': forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: Nome da Reserva'}),
             'veiculo':   forms.Select(attrs={'class': 'form-control'}),
             'cliente':   forms.Select(attrs={'class': 'form-control'}),
         }
