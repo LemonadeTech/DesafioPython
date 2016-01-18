@@ -16,13 +16,17 @@ class DevolucaoNew(TestCase):
         self.resp = self.client.get(r('devolucao_new'))
 
     def test_get(self):
-        self.assertEqual(200, self.resp.status_code)
+        self.assertEqual(302, self.resp.status_code)
 
     def test_template(self):
+        data = self._cria_locacao()
+        self.resp = self.client.get(r('devolucao_new'), {'locacao': data['locacao']})
         self.assertTemplateUsed(self.resp,'devolucao/devolucao.html')
-#
+
     def test_html(self):
         """HTML must contains input tags"""
+        data = self._cria_locacao()
+        self.resp = self.client.get(r('devolucao_new'), {'locacao': data['locacao']})
         tags = (('<form',1),
                 ('<input', 2),
                 ('type="number"', 1),
@@ -31,8 +35,16 @@ class DevolucaoNew(TestCase):
         for text, count in tags:
             with self.subTest():
                 self.assertContains(self.resp, text, count)
-#
+
     def test_save_devolucao(self):
+        data = self._cria_locacao()
+        resp = self.client.post(r('devolucao_new'), data)
+        with self.subTest():
+            self.assertTrue(Devolucao.objects.exists())
+            self.assertTrue(Locacao.objects.get().devolvido)
+            self.assertTrue(Veiculo.objects.get().disponivel)
+
+    def _cria_locacao(self):
         cliente = Cliente.objects.create(nome='lucas', tipo_cnh='B', cpf='12345678901')
         categoria = CategoriaVeiculo.objects.create(nome='carro', tipo_cnh='B')
         veiculo = Veiculo.objects.create(modelo='Palio', quilometragem=10, disponivel=True, categoria=categoria)
@@ -40,11 +52,7 @@ class DevolucaoNew(TestCase):
                     data_inicial='2015-01-01',data_final='2015-01-10',
                     valor=20,devolvido=False)
         data = dict(locacao=locacao.pk, km_percorrido=10)
-        resp = self.client.post(r('devolucao_new'), data)
-        with self.subTest():
-            self.assertTrue(Devolucao.objects.exists())
-            self.assertTrue(Locacao.objects.get().devolvido)
-            self.assertTrue(Veiculo.objects.get().disponivel)
+        return data
 
 
 class DevolucaoDetail(TestCase):

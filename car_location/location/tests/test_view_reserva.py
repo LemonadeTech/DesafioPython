@@ -14,13 +14,17 @@ class ReservaNew(TestCase):
         self.resp = self.client.get(r('reserva_new'))
 
     def test_get(self):
-        self.assertEqual(200, self.resp.status_code)
+        self.assertEqual(302, self.resp.status_code)
 
     def test_template(self):
+        self.data = self._cria_reserva()
+        self.resp = self.client.get(r('reserva_new'), {'veiculo': self.data['veiculo']})
         self.assertTemplateUsed(self.resp,'reserva/reserva.html')
 
     def test_html(self):
         """HTML must contains input tags"""
+        self.data = self._cria_reserva()
+        self.resp = self.client.get(r('reserva_new'), {'veiculo': self.data['veiculo']})
         tags = (('<form',1),
                 ('<input', 3),
                 ('<select', 2),
@@ -30,13 +34,16 @@ class ReservaNew(TestCase):
                 self.assertContains(self.resp, text, count)
 
     def test_save_reserva(self):
+        self.data = self._cria_reserva()
+        resp = self.client.post(r('reserva_new'), self.data)
+        self.assertTrue(Reserva.objects.exists())
+
+    def _cria_reserva(self):
         self.categoria = CategoriaVeiculo.objects.create(nome='carro', tipo_cnh='B')
         self.cliente = Cliente.objects.create(nome='lucas', tipo_cnh='B', cpf='12345678901')
         self.veiculo = Veiculo.objects.create(modelo='Palio', quilometragem=10, disponivel=False, categoria=self.categoria)
         self.data = dict(nome="reserva_1", veiculo=self.veiculo.pk, cliente=self.cliente.pk, finalizada=False)
-        resp = self.client.post(r('reserva_new'), self.data)
-        self.assertTrue(Reserva.objects.exists())
-
+        return self.data
 
 class ReservaDetail(TestCase):
     def setUp(self):
