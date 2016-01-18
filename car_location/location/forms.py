@@ -107,10 +107,10 @@ class LocacaoForm(forms.ModelForm):
             if not permission:
                 raise ValidationError('O cliente não Possui habilitação para conduzir esse veículo')
         if self.cleaned_data.get('data_inicial') == self.cleaned_data.get('data_final'):
-            raise ValidationError('O perído de locação deve ser maior do que 1 dia')
+            raise ValidationError('O período de locação deve ser maior do que 1 dia', "mesmo_dia")
         if self.cleaned_data.get('data_inicial') > self.cleaned_data.get('data_final'):
-            raise ValidationError('A data de entrega não pode ser menor do que a data de locação')
-        
+            raise ValidationError('A data de entrega não pode ser menor do que a data de locação', "periodo_invalido")
+
         return self.cleaned_data
 
 
