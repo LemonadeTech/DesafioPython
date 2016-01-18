@@ -9,7 +9,18 @@ from django.core.exceptions import ValidationError
 
 __author__ = 'lucas'
 
+
 class CategoriaVeiculoForm(forms.ModelForm):
+
+    def clean_nome(self):
+        return self.cleaned_data.get('nome').lower()
+
+    def clean(self):
+        cat_veiculo = CategoriaVeiculo.objects.filter(nome = self.cleaned_data.get('nome').lower())
+        if cat_veiculo:
+            raise ValidationError('Já existe uma categoria com esse nome')
+
+        return self.cleaned_data
 
     class Meta:
         model = CategoriaVeiculo
@@ -22,6 +33,16 @@ class CategoriaVeiculoForm(forms.ModelForm):
 
 
 class VeiculoForm(forms.ModelForm):
+
+    def clean_modelo(self):
+        return self.cleaned_data.get('modelo').lower()
+
+    def clean(self):
+        veiculo = Veiculo.objects.filter(modelo=self.cleaned_data.get('modelo').lower(),categoria=self.cleaned_data.get('categoria'))
+        if veiculo:
+            raise ValidationError('Já existe um veículo com esse nome e categoria')
+
+        return self.cleaned_data
 
     class Meta:
         model = Veiculo

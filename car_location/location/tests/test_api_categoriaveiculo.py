@@ -17,7 +17,7 @@ class CategoriaVeiculoApiTests(APITestCase):
         with self.subTest():
                 self.assertEqual(response.status_code, status.HTTP_201_CREATED)
                 self.assertEqual(CategoriaVeiculo.objects.count(), 1)
-                self.assertEqual(CategoriaVeiculo.objects.get().nome, 'Carro')
+                self.assertEqual(CategoriaVeiculo.objects.get().nome, 'carro')
 
     def test_detail_categoria(self):
         '''

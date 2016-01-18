@@ -6,7 +6,7 @@ __author__ = 'lucas'
 
 
 class CategoriaVeiculo(models.Model):
-    nome = models.CharField('nome', max_length=50)
+    nome = models.CharField('nome', max_length=50, unique=True)
     tipo_cnh = models.CharField(max_length=20)
 
     def settipo_cnh(self, cnh):
@@ -14,6 +14,10 @@ class CategoriaVeiculo(models.Model):
 
     def gettipo_cnh(self, x):
         return json.loads(self.tipo_cnh)
+
+    def save(self, *args, **kwargs):
+        self.nome = self.nome.lower()
+        super(CategoriaVeiculo, self).save(*args, **kwargs)  # Call the "real" save() method.
 
     class Meta:
         verbose_name_plural = 'categorias de veículos'
