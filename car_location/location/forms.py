@@ -81,6 +81,7 @@ class ClienteForm(forms.ModelForm):
 
         }
 
+
 class LocacaoForm(forms.ModelForm):
 
     km_inicial = forms.CharField(label="Km Inicial", required=False)
@@ -105,7 +106,11 @@ class LocacaoForm(forms.ModelForm):
                     break
             if not permission:
                 raise ValidationError('O cliente não Possui habilitação para conduzir esse veículo')
-
+        if self.cleaned_data.get('data_inicial') == self.cleaned_data.get('data_final'):
+            raise ValidationError('O perído de locação deve ser maior do que 1 dia')
+        if self.cleaned_data.get('data_inicial') > self.cleaned_data.get('data_final'):
+            raise ValidationError('A data de entrega não pode ser menor do que a data de locação')
+        
         return self.cleaned_data
 
 
