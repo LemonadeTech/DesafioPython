@@ -211,7 +211,6 @@ def devolucao_new(request):
     form = DevolucaoForm(request.POST)
 
     if not form.is_valid():
-        form.set_veiculo(Locacao.objects.all(), "---------")
         context['form'] = form
         return render(request, 'devolucao/devolucao.html', context)
 
