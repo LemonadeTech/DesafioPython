@@ -118,9 +118,9 @@ class DevolucaoForm(forms.ModelForm):
 
     locacao = forms.ModelChoiceField(queryset=Locacao.objects.filter(devolvido=False), widget=forms.Select(attrs={'class':'form-control'}), label="Locação",  empty_label=None)
 
-    def set_locacao(self, queryset):
-        self.fields['locacao'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Locação",  empty_label=None)
-        self.base_fields['locacao'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Locação")
+    def set_locacao(self, queryset, empty_label=None):
+        self.fields['locacao'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Locação",  empty_label=empty_label)
+        self.base_fields['locacao'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Locação", empty_label=empty_label)
 
 
     class Meta:

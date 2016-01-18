@@ -146,7 +146,6 @@ def locacao_list(request):
     return render(request, 'locacao/locacao_list.html', context)
 
 
-
 def locacao_new(request):
     form = LocacaoForm()
     context = {'label': 'Cadastrar', 'form': form}
@@ -195,17 +194,25 @@ def devolucao_new(request):
     form = DevolucaoForm()
     context = {'label': 'Cadastrar', 'form': form}
     if request.method == 'GET':
-        locacao = request.GET.get('locacao', None)
-        if locacao:
-            form = DevolucaoForm(initial={'locacao': locacao})
-            form.set_locacao(Locacao.objects.filter(pk=locacao))
+        pk = request.GET.get('locacao',None)
+        try:
+            locacao = Locacao.objects.get(pk=pk)
+            if not locacao.devolvido:
+                form = DevolucaoForm(initial={'locacao': pk})
+                form.set_locacao(Locacao.objects.filter(pk=pk))
+                context['form'] = form
+            else:
+                return HttpResponseRedirect(r('locacao'))
+        except:
+            return HttpResponseRedirect(r('locacao'))
 
         return render(request, 'devolucao/devolucao.html', context)
 
     form = DevolucaoForm(request.POST)
-    context['form'] = form
 
     if not form.is_valid():
+        form.set_veiculo(Locacao.objects.all(), "---------")
+        context['form'] = form
         return render(request, 'devolucao/devolucao.html', context)
 
     devolucao = Devolucao.objects.create(**form.cleaned_data)
@@ -252,22 +259,27 @@ def reserva_list(request):
 
 
 def reserva_new(request):
-    context = {'label': 'Cadastrar'}
+
+    form = ReservaForm()
+    context = {'label': 'Cadastrar', 'form': form}
 
     if request.method == 'GET':
-        form = ReservaForm()
-        veiculo = request.GET.get('veiculo', None)
-        if veiculo:
-            form = ReservaForm(initial={'veiculo': veiculo})
-            form.set_veiculo(Veiculo.objects.filter(pk=veiculo))
-            form.set_cliente(Cliente.objects.all(), "---------")
-        else:
-            form.set_veiculo(Veiculo.objects.filter(disponivel=False), "---------")
-            form.set_cliente(Cliente.objects.all(), "---------")
 
-        context['form'] = form
+        pk = request.GET.get('veiculo',None)
+        try:
+            veiculo = Veiculo.objects.get(pk=pk)
+            if not veiculo.disponivel:
+                form = ReservaForm(initial={'veiculo': pk})
+                form.set_veiculo(Veiculo.objects.filter(pk=pk))
+                form.set_cliente(Cliente.objects.all(), "---------")
+                context['form'] = form
+            else:
+                return HttpResponseRedirect(r('veiculo'))
+        except:
+            return HttpResponseRedirect(r('veiculo'))
 
         return render(request, 'reserva/reserva.html', context)
+
 
     form = ReservaForm(request.POST)
 
