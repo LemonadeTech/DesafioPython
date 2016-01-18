@@ -226,7 +226,7 @@ def devolucao_new(request):
         # envia para o primeiro cliente a fazer a reserva
         _send_email('Reserva Disponível',
                     settings.DEFAULT_FROM_EMAIL,
-                    devolucao.locacao.cliente.email,
+                    reserva[0].cliente.email,
                     'reserva/reserva_email.txt',
                     { 'reserva': reserva[0] }
                     )
