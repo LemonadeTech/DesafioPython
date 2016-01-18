@@ -156,9 +156,10 @@ def locacao_new(request):
         return render(request, 'locacao/locacao.html', context)
 
     form = LocacaoForm(request.POST)
-    context['form'] = form
 
     if not form.is_valid():
+        form.set_veiculo(Veiculo.objects.all(), "---------")
+        context['form'] = form
         return render(request, 'locacao/locacao.html', context)
 
     Locacao.objects.create(**form.cleaned_data)
