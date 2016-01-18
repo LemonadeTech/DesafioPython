@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/lffsantos/DesafioPython.svg?branch=master)](https://travis-ci.org/lffsantos/DesafioPython)
+[![Coverage Status](https://coveralls.io/repos/lffsantos/DesafioPython/badge.svg?branch=master&service=github)](https://coveralls.io/github/lffsantos/DesafioPython?branch=master)
 
 ## Como desenvolver?
 
