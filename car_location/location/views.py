@@ -253,7 +253,7 @@ def devolucao_new(request):
     messages.success(request, msg)
 
     # verificar se tem reserva para esse veiculo e enviar email para o cliente
-    reserva = Reserva.objects.filter(veiculo=devolucao.locacao.veiculo, finalizada=False).order_by('-created_at')
+    reserva = Reserva.objects.filter(veiculo=devolucao.locacao.veiculo, finalizada=False).order_by('created_at')
 
     if reserva:
         # envia para o primeiro cliente a fazer a reserva
@@ -301,7 +301,7 @@ def reserva_new(request):
         if veiculo:
             form = ReservaForm(initial={'veiculo': veiculo})
             form.set_veiculo(Veiculo.objects.filter(pk=veiculo))
-            form.set_cliente(Cliente.objects.filter(pk=veiculo))
+            form.set_cliente(Cliente.objects.all(), "---------")
         else:
             form.set_veiculo(Veiculo.objects.filter(disponivel=False), "---------")
             form.set_cliente(Cliente.objects.all(), "---------")
@@ -311,14 +311,14 @@ def reserva_new(request):
         return render(request, 'reserva/reserva.html', context)
 
     form = ReservaForm(request.POST)
-    context['form'] = form
 
     if not form.is_valid():
-        veiculo = request.POST.get('veiculo', None)
-        if veiculo:
-            form = ReservaForm(initial={'veiculo': veiculo})
-            form.set_veiculo(Veiculo.objects.filter(pk=veiculo))
-            context['form'] = form
+        context['form'] = form
+        # veiculo = request.POST.get('veiculo', None)
+        # if veiculo:
+        #     form = ReservaForm()
+        #     form.set_veiculo(Veiculo.objects.filter(pk=veiculo))
+        #     form.set_cliente(Cliente.objects.all(), "---------")
 
         return render(request, 'reserva/reserva.html', context)
 

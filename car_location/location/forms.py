@@ -15,10 +15,14 @@ class CategoriaVeiculoForm(forms.ModelForm):
     def clean_nome(self):
         return self.cleaned_data.get('nome').lower()
 
+    def clean_tipo_cnh(self):
+        return self.cleaned_data.get('tipo_cnh').upper()
+
     def clean(self):
-        cat_veiculo = CategoriaVeiculo.objects.filter(nome = self.cleaned_data.get('nome').lower())
-        if cat_veiculo:
-            raise ValidationError('Já existe uma categoria com esse nome')
+        if not self.instance.pk:
+            cat_veiculo = CategoriaVeiculo.objects.filter(nome = self.cleaned_data.get('nome').lower())
+            if cat_veiculo:
+                raise ValidationError('Já existe uma categoria com esse nome')
 
         return self.cleaned_data
 
@@ -38,11 +42,13 @@ class VeiculoForm(forms.ModelForm):
         return self.cleaned_data.get('modelo').lower()
 
     def clean(self):
-        veiculo = Veiculo.objects.filter(modelo=self.cleaned_data.get('modelo').lower(),categoria=self.cleaned_data.get('categoria'))
-        if veiculo:
-            raise ValidationError('Já existe um veículo com esse nome e categoria')
+        if not self.instance.pk:
+            veiculo = Veiculo.objects.filter(modelo=self.cleaned_data.get('modelo').lower(),categoria=self.cleaned_data.get('categoria'))
+            if veiculo:
+                raise ValidationError('Já existe um veículo com esse nome e categoria')
 
         return self.cleaned_data
+
 
     class Meta:
         model = Veiculo
@@ -85,15 +91,18 @@ class LocacaoForm(forms.ModelForm):
         self.base_fields['cliente'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Cliente",  empty_label=empty_label)
 
     def clean(self):
+        cliente, veiculo = self.cleaned_data.get('cliente'), self.cleaned_data.get('veiculo')
+        if cliente and veiculo:
+            tipo_cnh_cliente, permissao_veiculo_cnh = cliente.tipo_cnh, veiculo.categoria.tipo_cnh
+            permission = False
+            for p in permissao_veiculo_cnh.split(","):
+                if p.strip() in [ t.strip() for t in tipo_cnh_cliente.split(",")]:
+                    permission = True
+                    break
+            if not permission:
+                raise ValidationError('O cliente não Possui habilitação para conduzir esse veículo')
 
-        tipo_cnh_cliente, permissao_veiculo_cnh = self.cleaned_data.get('cliente').tipo_cnh, self.cleaned_data.get('veiculo').categoria.tipo_cnh
-        permission = False
-        for p in permissao_veiculo_cnh.split(","):
-            if p.strip() in [ t.strip() for t in tipo_cnh_cliente.split(",")]:
-                permission = True
-                break
-        if not permission:
-            raise ValidationError('O cliente não Possui habilitação para conduzir esse veículo')
+        return self.cleaned_data
 
 
     class Meta:
@@ -141,15 +150,27 @@ class ReservaForm(forms.ModelForm):
                                                              widget=forms.Select(attrs={'class':'form-control'}), label="Cliente",  empty_label=empty_label)
 
     def clean(self):
-        reserva = Reserva.objects.filter(cliente=self.cleaned_data.get('cliente'),
-                                         veiculo=self.cleaned_data.get('veiculo'),finalizada=True)
-        if reserva:
-            raise ValidationError('O cliente Já tem uma reserva aberta para esse veículo.')
-        tipo_cnh, permissao_cnh = self.cleaned_data.get('cliente').tipo_cnh, self.cleaned_data.get('veiculo').categoria.tipo_cnh
-        if not permissao_cnh in [ tipo for tipo in tipo_cnh]:
-            raise ValidationError('O cliente não Possui habilitação para conduzir esse veículo')
-        if self.cleaned_data.get('cliente').email == "":
-            raise ValidationError('Adicone um endereço de email ao cliente para efetuar a reserva')
+        cliente, veiculo = self.cleaned_data.get('cliente'), self.cleaned_data.get('veiculo')
+        if cliente and veiculo:
+            reserva = Reserva.objects.filter(cliente=self.cleaned_data.get('cliente'),
+                                         veiculo=self.cleaned_data.get('veiculo'),finalizada=False)
+            if reserva:
+                if reserva[0] != self.instance:
+                    raise ValidationError('O cliente Já tem uma reserva aberta para esse veículo.')
+
+            tipo_cnh_cliente, permissao_veiculo_cnh = cliente.tipo_cnh, veiculo.categoria.tipo_cnh
+            permission = False
+            for p in permissao_veiculo_cnh.split(","):
+                if p.strip() in [ t.strip() for t in tipo_cnh_cliente.split(",")]:
+                    permission = True
+                    break
+            if not permission:
+                raise ValidationError('O cliente não Possui habilitação para conduzir esse veículo')
+            if cliente.email == "":
+                raise ValidationError('Adicone um endereço de email ao cliente para efetuar a reserva')
+
+        return self.cleaned_data
+
 
     class Meta:
         model = Reserva
