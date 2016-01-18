@@ -62,8 +62,8 @@ class VeiculoForm(forms.ModelForm):
 
 
 class ClienteForm(forms.ModelForm):
-    email = forms.EmailField(label="Email", required=False, widget=forms.EmailInput(attrs={'class': 'form-control','placeholder': 'ex: (xx)-999999999'}))
-    phone = forms.CharField(label="Telefone", required=False, widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'ex: email@gmail.com'}))
+    email = forms.EmailField(label="Email", required=False, widget=forms.EmailInput(attrs={'class': 'form-control','placeholder': 'ex: email@gmail.com'}))
+    phone = forms.CharField(label="Telefone", required=False, widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'ex: (xx)-999999999'}))
 
     class Meta:
         model = Cliente
