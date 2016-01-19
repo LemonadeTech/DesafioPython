@@ -1,3 +1,34 @@
+[![Build Status](https://travis-ci.org/lffsantos/DesafioPython.svg?branch=master)](https://travis-ci.org/lffsantos/DesafioPython)
+[![Coverage Status](https://coveralls.io/repos/lffsantos/DesafioPython/badge.svg?branch=master&service=github)](https://coveralls.io/github/lffsantos/DesafioPython?branch=master)
+
+[https://locadora-lucasfarias.herokuapp.com/](https://locadora-lucasfarias.herokuapp.com/)
+
+## Como desenvolver?
+
+1. clone o respositório.
+2. crie um virtualenvo com Python 3.5.
+3. Ative o virtualenv.
+4. Instale as dependências.
+5. Configure a instância .env
+6. Execute os testes.
+
+```console
+git clone git@github.com:lffsantos/DesafioPython.git DesafioPython
+cd DesafioPython
+python -m venv .env
+source .env/bin/activate
+pip install -r requirements-dev.txt
+cp contrib/env-sample .env
+python manage.py test
+```
+
+```console
+API REST: 
+http://host:port/api/v1/
+```
+
+=================================================================================================================
+
 O objetivo do desafio proposto é avaliar o conhecimento do candidato e verificar se ele possui o conhecimento básico esperado para exercício das atividades esperadas. 
 
 ##Desafio
