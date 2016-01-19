@@ -19,6 +19,7 @@ class CategoriaVeiculoForm(forms.ModelForm):
         return self.cleaned_data.get('tipo_cnh').upper()
 
     def clean(self):
+        self.cleaned_data = super().clean()
         if not self.instance.pk:
             cat_veiculo = CategoriaVeiculo.objects.filter(nome = self.cleaned_data.get('nome').lower())
             if cat_veiculo:
@@ -42,13 +43,13 @@ class VeiculoForm(forms.ModelForm):
         return self.cleaned_data.get('modelo').lower()
 
     def clean(self):
+        self.cleaned_data = super().clean()
         if not self.instance.pk:
             veiculo = Veiculo.objects.filter(modelo=self.cleaned_data.get('modelo').lower(),categoria=self.cleaned_data.get('categoria'))
             if veiculo:
                 raise ValidationError('Já existe um veículo com esse nome e categoria')
 
         return self.cleaned_data
-
 
     class Meta:
         model = Veiculo
@@ -61,17 +62,11 @@ class VeiculoForm(forms.ModelForm):
         }
 
 
-def validate_cpf(value):
-    if not value.isdigit():
-        raise ValidationError('CPF deve conter apenas números','digits')
-    if len(value) != 11:
-        raise ValidationError('CPF deve conter 11 números', 'length')
-
-
 class ClienteForm(forms.ModelForm):
     email = forms.EmailField(label="Email", required=False, widget=forms.EmailInput(attrs={'class': 'form-control','placeholder': 'ex: email@gmail.com'}))
     phone = forms.CharField(label="Telefone", required=False, widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'ex: (xx)-999999999'}))
-    cpf = forms.CharField(label="CPF", widget=forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: 12345678901'}), validators=[validate_cpf])
+    cpf = forms.CharField(label="CPF", max_length=11, widget=forms.TextInput(attrs={'class': 'form-control col-md-7 col-xs-12 active', 'placeholder': 'ex: 12345678901'}))
+
     class Meta:
         model = Cliente
         fields = ('nome', 'cpf','tipo_cnh', 'phone', 'email')
@@ -96,6 +91,7 @@ class LocacaoForm(forms.ModelForm):
         self.base_fields['cliente'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Cliente",  empty_label=empty_label)
 
     def clean(self):
+        self.cleaned_data = super().clean()
         cliente, veiculo = self.cleaned_data.get('cliente'), self.cleaned_data.get('veiculo')
         if cliente and veiculo:
             tipo_cnh_cliente, permissao_veiculo_cnh = cliente.tipo_cnh, veiculo.categoria.tipo_cnh
@@ -112,7 +108,6 @@ class LocacaoForm(forms.ModelForm):
             raise ValidationError('A data de entrega não pode ser menor do que a data de locação', "periodo_invalido")
 
         return self.cleaned_data
-
 
     class Meta:
         model = Locacao
@@ -132,7 +127,6 @@ class DevolucaoForm(forms.ModelForm):
     def set_locacao(self, queryset, empty_label=None):
         self.fields['locacao'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Locação",  empty_label=empty_label)
         self.base_fields['locacao'] = forms.ModelChoiceField(queryset=queryset, widget=forms.Select(attrs={'class':'form-control'}), label="Locação", empty_label=empty_label)
-
 
     class Meta:
         model = Devolucao
@@ -159,6 +153,7 @@ class ReservaForm(forms.ModelForm):
                                                              widget=forms.Select(attrs={'class':'form-control'}), label="Cliente",  empty_label=empty_label)
 
     def clean(self):
+        self.cleaned_data = super().clean()
         cliente, veiculo = self.cleaned_data.get('cliente'), self.cleaned_data.get('veiculo')
         if cliente and veiculo:
             reserva = Reserva.objects.filter(cliente=self.cleaned_data.get('cliente'),
@@ -179,7 +174,6 @@ class ReservaForm(forms.ModelForm):
                 raise ValidationError('Adicone um endereço de email ao cliente para efetuar a reserva')
 
         return self.cleaned_data
-
 
     class Meta:
         model = Reserva
