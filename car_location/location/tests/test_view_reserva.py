@@ -40,15 +40,16 @@ class ReservaNew(TestCase):
 
     def _cria_reserva(self):
         self.categoria = CategoriaVeiculo.objects.create(nome='carro', tipo_cnh='B')
-        self.cliente = Cliente.objects.create(nome='lucas', tipo_cnh='B', cpf='12345678901')
+        self.cliente = Cliente.objects.create(nome='lucas', tipo_cnh='B', cpf='12345678901', email='lffsantos@gmail.com')
         self.veiculo = Veiculo.objects.create(modelo='Palio', quilometragem=10, disponivel=False, categoria=self.categoria)
         self.data = dict(nome="reserva_1", veiculo=self.veiculo.pk, cliente=self.cliente.pk, finalizada=False)
         return self.data
 
+
 class ReservaDetail(TestCase):
     def setUp(self):
         self.categoria = CategoriaVeiculo.objects.create(nome='carro', tipo_cnh='B')
-        self.cliente = Cliente.objects.create(nome='lucas', tipo_cnh='B', cpf='12345678901')
+        self.cliente = Cliente.objects.create(nome='lucas', tipo_cnh='B', cpf='12345678901', email='lffsantos@gmail.com')
         self.veiculo = Veiculo.objects.create(modelo='Palio', quilometragem=10, disponivel=False, categoria=self.categoria)
         self.data = dict(nome="reserva_1", veiculo=self.veiculo, cliente=self.cliente)
         self.obj = Reserva.objects.create(**self.data)
@@ -56,9 +57,8 @@ class ReservaDetail(TestCase):
 
     def test_get(self):
         self.assertEqual(200, self.resp.status_code)
-#
-    def test_edit_reserva(self):
 
+    def test_edit_reserva(self):
         self.assertFalse(Reserva.objects.get().finalizada)
         self.data['finalizada'] = True
         self.data['cliente'] = self.cliente.pk

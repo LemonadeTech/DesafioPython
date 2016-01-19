@@ -41,7 +41,7 @@ def categoria_new(request):
     if not form.is_valid():
         return render(request, 'categoria_veiculo/categoria_veiculos.html', context)
 
-    CategoriaVeiculo.objects.create(**form.cleaned_data)
+    form.save()
 
     messages.success(request, SUCCESS_MSG)
 
@@ -81,7 +81,7 @@ def veiculo_new(request):
     if not form.is_valid():
         return render(request, 'veiculo/veiculos.html', context)
 
-    Veiculo.objects.create(**form.cleaned_data)
+    form.save()
 
     messages.success(request, SUCCESS_MSG)
     return HttpResponseRedirect(r('veiculo'))
@@ -135,7 +135,7 @@ def cliente_new(request):
     if not form.is_valid():
         return render(request, 'cliente/clientes.html', context)
 
-    Cliente.objects.create(**form.cleaned_data)
+    form.save()
 
     messages.success(request, SUCCESS_MSG)
     return HttpResponseRedirect(r('cliente'))
@@ -161,7 +161,7 @@ def locacao_new(request):
         context['form'] = form
         return render(request, 'locacao/locacao.html', context)
 
-    Locacao.objects.create(**form.cleaned_data)
+    form.save()
 
     messages.success(request, SUCCESS_MSG)
     return HttpResponseRedirect(r('locacao'))
@@ -214,8 +214,7 @@ def devolucao_new(request):
         context['form'] = form
         return render(request, 'devolucao/devolucao.html', context)
 
-    devolucao = Devolucao.objects.create(**form.cleaned_data)
-
+    devolucao = form.save()
 
     messages.success(request, "Devolução efetuada com sucesso")
 
@@ -286,7 +285,7 @@ def reserva_new(request):
         context['form'] = form
         return render(request, 'reserva/reserva.html', context)
 
-    Reserva.objects.create(**form.cleaned_data)
+    form.save()
 
     messages.success(request, SUCCESS_MSG)
     return HttpResponseRedirect(r('reserva'))

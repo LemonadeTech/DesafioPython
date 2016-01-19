@@ -6,7 +6,7 @@ __author__ = 'lucas'
 
 
 class Devolucao(models.Model):
-    locacao = models.ForeignKey(Locacao, verbose_name='locação', unique=True)
+    locacao = models.OneToOneField(Locacao, verbose_name='locação', unique=True)
     km_percorrido = models.FloatField('km percorrido', null=True)
     data_entrega = models.DateTimeField('data da entrega', auto_now_add=True)
 
