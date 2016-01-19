@@ -1,0 +1,42 @@
+{% extends 'base_list.html' %}
+{% block title_page %}
+    Categoria de Veículos
+{% endblock %}
+{% block link_new %}
+    <a href="{% url 'categoria_new' %}" class="col-md-12 col-sm-12 col-xs-12 btn btn-primary pull-right">Nova Categoria</a>
+{% endblock %}
+{% block title_page_list %}
+    Lista de Categorias
+{% endblock %}
+{% block table %}
+    <table id="example" class="table table-striped responsive-utilities jambo_table">
+        <thead>
+            <tr class="headings">
+                <th>Categoria </th>
+                <th>CNH Permitida </th>
+                <th class=" no-link last"><span class="nobr"> Ação </span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for categoria in categorias %}
+            <tr class="even pointer">
+                <td class=" ">{{ categoria.nome }}</td>
+                <td class=" ">{{ categoria.tipo_cnh }}</td>
+                <td class=" last ">
+                    <a href="{% url 'categoria_detail' categoria.id %}">Detalhe</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+
+
+
+
+
+

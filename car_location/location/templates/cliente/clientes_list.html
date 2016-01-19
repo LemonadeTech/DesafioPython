@@ -1,0 +1,48 @@
+{% extends 'base_list.html' %}
+{% block title_page %}
+    Clientes
+{% endblock %}
+{% block link_new %}
+    <a href="{% url 'cliente_new' %}" class="col-md-12 col-sm-12 col-xs-12 btn btn-primary pull-right">Novo Cliente</a>
+{% endblock %}
+{% block title_page_list %}
+    Lista de Clientes
+{% endblock %}
+{% block table %}
+    <table id="example" class="table table-striped responsive-utilities jambo_table">
+        <thead>
+            <tr class="headings">
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Tipo CNH</th>
+                <th>Telefone</th>
+                <th>Email</th>
+                <th class=" no-link last"><span class="nobr"> Ação </span>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for cliente in clientes %}
+            <tr class="even pointer">
+                <td class=" ">{{ cliente.nome }}</td>
+                <td class=" ">{{ cliente.cpf }}</td>
+                <td class=" ">{{ cliente.tipo_cnh }}</td>
+                <td class=" ">{{ cliente.phone }}</td>
+                <td class=" ">{{ cliente.email }}</td>
+                <td class=" last ">
+                    <a href="{% url 'cliente_detail' cliente.id %}">Detalhe</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+
+
+
+
+
+
