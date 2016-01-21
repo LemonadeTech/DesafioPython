@@ -1,0 +1,45 @@
+      <header class="header dark-bg">
+            <div class="toggle-nav">
+                <div class="icon-reorder tooltips" data-original-title="Toggle Navigation" data-placement="bottom"><i class="icon_menu"></i></div>
+            </div>
+
+            <!--logo start-->
+            <a href="index.html" class="logo">Locadora -<span class="lite"> Veiculos</span></a>
+            <!--logo end-->
+      </header>      
+      <!--header end-->
+
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu">           
+                  <li class="">
+                      <a class="" href="{% url 'index' %}">
+                          <i class="icon_house_alt"></i>
+                          <span>Dashboard</span>
+                      </a>
+                  </li>
+				  <li class="">
+                      <a class="" href="{% url 'veiculos' %}">
+                          <i class="icon_table"></i>
+                          <span>Veiculos</span>
+                      </a>
+                  </li>
+				  <li>
+                      <a class="" href="{% url 'clientes' %}">
+                          <i class="icon_table"></i>
+                          <span>Clientes</span>
+                      </a>
+                  </li>
+				  <li>
+					<a class="" href="{% url 'locacao' %}">
+						<i class="icon_table"></i>
+						<span>Locacao</span>
+					</a>
+				  </li>                  
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+     

@@ -1,0 +1,25 @@
+﻿									<script>
+										
+									</script>
+									<div class="form-group ">
+											<label for="cnome" class="control-label col-lg-2">Clientes<span class="required">*</span></label>
+											<div class="col-lg-10">
+												<select class="form-control" ng-model="formData.id_cliente" ng-change="mudaCarro()" ng-options="item.id as item.nome_cliente for item in Clientes">
+													<option value="">Selecione um cliente</option>
+												</select>
+											</div>
+									</div>
+								<div class="form-group ">
+									<label for="cnome" class="control-label col-lg-2">Carro<span class="required">*</span></label>
+									<div class="col-lg-10">
+										<select class="form-control" ng-model="formData.id_veiculos" ng-options="item.id as item.placa for item in Carros">
+											<option value="">Selecione um Carro</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group ">
+									  <label for="cquilometragem" class="control-label col-lg-2">Data da Locação<span class="required">*</span></label>
+									  <div class="col-lg-10">
+										  <input class="form-control" id="cquilometragem" ng-model="formData.data_locacao" type="text" required />
+									</div>
+								</div>

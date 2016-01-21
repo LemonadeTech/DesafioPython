@@ -1,0 +1,102 @@
+﻿{% include "header.html" %}
+{% load static %}
+  <body>
+    <script src="{% static 'js/jquery.js' %}"></script>
+  	<script src="{% static 'js/angular.min.js' %}"></script>
+	<script src="{% static 'js/cookie.js' %}"></script>
+	<script>
+		var app = angular.module('myapp', []);
+		app.config(function($interpolateProvider) {
+		$interpolateProvider.startSymbol('{[{');
+		$interpolateProvider.endSymbol('}]}');
+		});
+		'use strict';
+		app.controller('tabelaCtrl', function($scope, $http) {	
+			$http.defaults.xsrfCookieName = 'csrftoken';
+			$http.defaults.xsrfHeaderName = 'X-CSRFToken';
+			
+			{% if listaURL == 'locacao'%}
+				$http.get("{% url 'consultarClientes' %}").then(function(response) {
+					$scope.Clientes = response.data;
+				});
+				
+				$scope.mudaCarro = function() {
+					$http.get("{% url 'consultarVeiculos' %}"+"categoria/"+$scope.formData.id_cliente).then(function(response) {
+						$scope.Carros = response.data;
+						console.log(response.data);
+					});
+				};
+			{%endif%}
+			
+			$scope.processForm = function() {
+				console.log($.param($scope.formData));
+				$http({
+					method  : 'POST',
+					url     : '{% url consultaURL %}',
+					data    : $.param($scope.formData),  // pass in data as strings
+					headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+				}).success(function(data) {
+					console.log(data);
+					windows.location.href = "{% url listaURL %}";
+				});
+			};
+
+
+		});
+	</script>
+  <section id="container" class="">
+	{% include "sidebar.html" %}
+      <!--main content start-->
+      <section id="main-content">
+          <section class="wrapper">
+		<div class="row">
+				<div class="col-lg-12">
+					<h3 class="page-header"><i class="fa fa-files-o"></i> Cadastro de {{titulo}}</h3>
+					<ol class="breadcrumb">
+						<li><i class="fa fa-home"></i><a href="index.html">Home</a></li>
+						<li><i class="icon_document_alt"></i>{{titulo}}</li>
+						<li><i class="fa fa-files-o"></i>Cadastro de {{titulo}}</li>
+					</ol>
+				</div>
+			</div>
+              <!-- Form validations -->              
+              <div class="row">
+                  <div class="col-lg-12">
+                      <section class="panel">
+                          <header class="panel-heading">
+                              Informações - {{titulo}}
+                          </header>
+                          <div class="panel-body">
+                              <div class="form" ng-app="myapp" ng-controller="tabelaCtrl">
+							 		<form class="form-validate form-horizontal" ng-submit="processForm()">
+										{% include formHTML %}
+										<div class="form-group">
+											<div class="col-lg-offset-2 col-lg-10">
+												<button class="btn btn-primary" type="submit">Cadastrar</button>
+												<a href="{% url listaURL %}"><button class="btn btn-default" type="button">Cancelar</button></a>
+											</div>
+										</div>
+									</form>
+                              </div>
+                          </div>
+                      </section>
+                  </div>
+              </div>
+              <!-- page end-->
+          </section>
+      </section>
+      <!--main content end-->
+  </section>
+  <!-- container section end -->
+
+    <!-- javascripts -->
+
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- nicescroll -->
+    <script src="{% static 'js/jquery.scrollTo.min.js' %}"></script>
+    <script src="{% static 'js/jquery.nicescroll.js' %}" type="text/javascript"></script>
+    <!--custome script for all page-->
+    <script src="{% static 'js/scripts.js' %}"></script>
+
+  </body>
+</html>
