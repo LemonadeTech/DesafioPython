@@ -1,0 +1,35 @@
+﻿										  <div class="form-group ">
+											  <label for="cmodelo" class="control-label col-lg-2">Modelo<span class="required">*</span></label>
+											  <div class="col-lg-10">
+												  <input class="form-control" id="cmodelo" ng-model="formData.modelo" minlength="5" type="text" required />
+											  </div>
+										  </div>
+                                      <div class="form-group ">
+                                          <label for="ccat" class="control-label col-lg-2">Categoria <span class="required">*</span></label>
+                                          <div class="col-lg-10">
+                                              <input class="form-control " id="ccat" type="text" ng-model="formData.categoria" placeholder="Separar por vírgula sem espaço. Ex: A,B,C" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cplaca" class="control-label col-lg-2">Placa</label>
+                                          <div class="col-lg-10">
+                                              <input class="form-control " id="formData.placa" type="text" ng-model="formData.placa" placeholder="AAA-0000" required />
+                                          </div>
+                                      </div>
+                                      <div class="form-group ">
+                                          <label for="cquilometragem" class="control-label col-lg-2">Quilimetragem Atual <span class="required">*</span></label>
+                                          <div class="col-lg-10">
+                                              <input class="form-control" id="cquilometragem" ng-model="formData.quilometragem" minlength="5" type="number" required />
+                                          </div>
+                                      </div>                                      
+                                      <div class="form-group ">
+                                          <label for="ctipo" class="control-label col-lg-2">Tipo de Veiculo</label>
+                                          <div class="col-lg-10">
+												<select class="form-control" ng-model="formData.tipo_carro" id="ctipo" required>
+													<option selected>Moto</option>
+													<option>Carro</option>
+													<option>Utilitário</option>
+													<option>Caminhão</option>
+												</select>
+                                          </div>
+                                      </div>
